@@ -14,8 +14,6 @@ import data.Grid;
 
 public class PuzzleRow implements RowSortable{
 	
-	//TEST CHANGE
-	
 	/**
 	 * Überprüft, ob es midnestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
