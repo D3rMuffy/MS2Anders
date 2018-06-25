@@ -9,6 +9,10 @@ import data.Grid;
 
 public class PuzzleRow implements RowSortable{
 	
+	public PuzzleRow(){
+		permute();
+	}
+	
 	/**
 	 * Überprüft, ob es midnestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
@@ -30,8 +34,13 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	public boolean hasRowConflictFree(Grid grid) {
-		// TODO Auto-generated method stub
-		return false;
+		Grid temp = getRowConflictFree(grid);
+		
+		if(isNullGrid(temp) == true){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	public Grid getRowSortColBlock(Grid grid) {
@@ -64,6 +73,33 @@ public class PuzzleRow implements RowSortable{
 	static int allPermInd = 0;
 	
 	/**
+	 * Hilfsmethode zu hasRowConflictFree.
+	 * Überprüft auf dem grid, ob es nur aus Nullen besteht - also ein Nullergrid ist.
+	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
+	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurückgegeben. Sonst false.
+	 */
+	private boolean isNullGrid(Grid temp) {
+		int nullCounter = 0;
+		
+		int row = 1;
+		while(row < 10){
+			for(int rIndex : temp.getRowValues(row)){
+				if(temp.getRowValues(row)[rIndex] == 0)
+				{
+					nullCounter++;
+				}
+			}
+			row++;
+		}
+		
+		if(nullCounter == 81){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
 	 * Hilfsmethode zu getRowConflictFree.
 	 * Überprüft auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein v-konfliktfreies Sudoku entstehen kann.
 	 * @param grid Sudoku, auf dem die Zeilen neu angeordnet werden, um eine mögliche v-konfliktfreie Anordnung zu finden.
@@ -71,8 +107,6 @@ public class PuzzleRow implements RowSortable{
 	 */
 	private Grid changeAll(Grid grid) {
 		Grid temp = new Grid(9);
-		
-		permute();
 	    
 	    if(allPerm != null){
 		    for(int allPermInd = 0; allPermInd < allPerm.length; allPermInd++){		    	
