@@ -16,16 +16,16 @@ public class App {
 		GridUtils3 cba = new GridUtils3();
 		PuzzleRow cab = new PuzzleRow();
 		
-		//DEFAULT
-		int[] row1 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row2=  {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row3 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row4 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row5 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row6 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row7 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row8 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
-		int[] row9 = {+1,+2,+3,+4,+5,+6,+7,+8,+9};
+		//getRowColSortBlock OUTPUT
+		int[] row1 = {+1,+2,+3,+1,+2,+3,+1,+2,+3};
+		int[] row2=  {+4,+5,+6,+4,+5,+6,+4,+5,+6};
+		int[] row3 = {+7,+8,+9,+7,+8,+9,+7,+8,+9};
+		int[] row4 = {+3,+1,+2,+3,+1,+2,+3,+1,+2};
+		int[] row5=  {+6,+4,+5,+6,+4,+5,+6,+4,+5};
+		int[] row6 = {+9,+7,+8,+9,+7,+8,+9,+7,+8};
+		int[] row7 = {+2,+3,+1,+2,+3,+1,+2,+3,+1};
+		int[] row8=  {+5,+6,+4,+5,+6,+4,+5,+6,+4};
+		int[] row9 = {+8,+9,+7,+8,+9,+7,+8,+9,+7};
 		
 		//TWO TURN
 		int[] row11 = {+9,-1,-1,-1,-1,-1,-1,-1,-1};
@@ -68,7 +68,11 @@ public class App {
 	public static void callPuzzleRow(Grid a, PuzzleRow cab){
 		System.out.println("GetRowConflictFree:");
 		(cab.getRowConflictFree(a)).print();
+		
 		System.out.println("\nHasRowConflictFree: " + cab.hasRowConflictFree(a));
+		
+		System.out.println("getRowSortColBlock: ");
+		(cab.getRowSortColBlock(a)).print();
 		
 	}
 
@@ -199,6 +203,17 @@ public class App {
 //	int[] row7 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 //	int[] row8 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 //	int[] row9 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
+//	
+//	//getRowSortColBlock INPUT
+//	int[] row1 = {+1,+4,+7,+3,+6,+8,+2,+5,+9};
+//	int[] row2=  {+2,+5,+8,+1,+4,+9,+3,+6,+7};
+//	int[] row3 = {+3,+6,+9,+2,+5,+7,+1,+4,+8};
+//	int[] row4 = {+1,+4,+7,+3,+6,+8,+2,+5,+9};
+//	int[] row5=  {+2,+5,+9,+1,+4,+9,+3,+6,+8};
+//	int[] row6 = {+3,+6,+8,+2,+5,+7,+1,+4,+7};
+//	int[] row7 = {+1,+4,+7,+3,+6,+8,+2,+5,+9};
+//	int[] row8=  {+2,+5,+9,+1,+4,+9,+3,+6,+8};
+//	int[] row9 = {+3,+6,+8,+2,+5,+7,+1,+4,+7};
 //	
 //	//v-konfliktes Sudoku
 //	int[] row1 = {+2,+2,+2,+2,+2,+2,+2,+2,+2};

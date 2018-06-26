@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 
+import data.Cell;
 import data.Grid;
 
 public class PuzzleRow implements RowSortable{
@@ -33,6 +34,11 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 
+	/**
+	 * Überprüft, ob es midnestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
+	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
+	 * @return boolean true, falls es eine v-konfliktfreie Anordnung gibt, false falls nicht.
+	 */
 	public boolean hasRowConflictFree(Grid grid) {
 		Grid temp = getRowConflictFree(grid);
 		
@@ -44,7 +50,11 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	public Grid getRowSortColBlock(Grid grid) {
-		// TODO Auto-generated method stub
+		if(colValid(grid) == true && blockValid(grid) == true){
+			return grid;
+		}else{
+			System.out.println("PROKEMN");
+		}
 		return null;
 	}
 
@@ -83,9 +93,8 @@ public class PuzzleRow implements RowSortable{
 		
 		int row = 1;
 		while(row < 10){
-			for(int rIndex : temp.getRowValues(row)){
-				if(temp.getRowValues(row)[rIndex] == 0)
-				{
+			for(int rIndex = 0; rIndex < temp.getRowValues(row).length; rIndex++){
+				if(temp.getRowValues(row)[rIndex] == 0){
 					nullCounter++;
 				}
 			}
@@ -121,7 +130,6 @@ public class PuzzleRow implements RowSortable{
 		return null;
 	}
 
-	
 	/**
 	 * Hilfsmethode zu getRowConflictFree.
 	 * Überprüft, ob das gegebene Grid nicht schon v-konfliktfrei ist.
@@ -201,6 +209,94 @@ public class PuzzleRow implements RowSortable{
 	        permutation(möglicheNummer, permutation, size);
 	        möglicheNummer.add(permutation.pop());
 	    }
+	}
+	
+	/**
+	 * Hilfsmethode zu der Methode getRowSortColBlock.
+	 * Überprüft alle Columns, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * @param grid Das Sudoku auf dem geprüft wird
+	 * @return boolean true, falls jede Zahl in jeder Col einmal vorkommt. false, falls nicht.
+	 */
+	public boolean colValid(Grid grid){
+		int wrong = 0;
+		
+		for(int col = 0; col < grid.getRowValues(1).length; col++){
+			int[] numbers = {0,0,0,0,0,0,0,0,0};
+			
+			for(int row = 0; row < grid.getColValues(1).length; row++){
+				
+				numbers[(grid.getValue(row+1, col+1))-1]++;
+			}
+			
+			for(int i = 0; i < numbers.length; i++){
+				if(numbers[i] != 1){
+					wrong++;
+				}
+			}
+		}
+		
+		
+		
+		if(wrong > 0){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	/**
+	 * Hilfsmethode zu der Methode getRowSortColBlock.
+	 * Überprüft alle Blocks, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * @param grid Das Sudoku auf dem geprüft wird
+	 * @return boolean true, falls jede Zahl in jedem Block einmal vorkommt. false, falls nicht.
+	 */
+	public boolean blockValid(Grid grid){
+		int nope = 0;
+		
+		for(int i = 1; i < 10; i = i+3){
+			for(int j = 1; j < 10; j = j+3){
+				nope = nope + subBlockValid(grid, grid.getCell(i, j));
+			}
+		}
+		
+		if(nope != 0){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	/**
+	 * Submethode zu der Methode blockValid.
+	 * Über die Ankerzelle, die übergeben wird, wird der gesamte Block ermittelt und durchlaufen
+	 * @param grid Das Sudoku auf dem geprüft wird
+	 * @param a Ankerzelle eines Blocks
+	 * @return int 1 falls eine Zahl mehr als einmal pro BLock vorkommt. 0 falls nicht.
+	 */
+	public int subBlockValid(Grid grid, Cell a){
+		int blockCol = (a.getcIndex() - ((a.getcIndex()-1)%3));
+		int blockRow = (a.getrIndex() - ((a.getrIndex()-1)%3));
+		int[] numbers = {0,0,0,0,0,0,0,0,0};
+		
+		for(int i = blockRow; i < blockRow+3; i++){
+			for(int j = blockCol; j < blockCol+3; j++){	
+				
+				numbers[(grid.getValue(i, j))-1]++;
+			}
+		}
+		
+		int nope = 0;
+		for(int i = 0; i < numbers.length; i++){
+			if(numbers[i] != 1){
+				nope++;
+			}
+		}
+		
+		if(nope != 0){
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 	
 	public void auslesen(int[] a){
