@@ -10,8 +10,61 @@ import data.Grid;
 
 public class PuzzleRow implements RowSortable{
 	
+	@SuppressWarnings("rawtypes")
+	static LinkedList[] allPerm = new LinkedList[9*8*7*6*5*4*3*2];
+	static int allPermInd = 0;
+	
 	public PuzzleRow(){
-		permute();
+		permuteAll();
+	}
+	
+	/**
+	 * Hilfsmethode zu der gesamten Klasse.
+	 * Erstellt das Set s und rift mit diesem die SubMethode permutation auf
+	 */
+	public static void permuteAll(){
+		Set<Integer> s = new HashSet<Integer>();
+	    s.add(1);
+	    s.add(2);
+	    s.add(3);
+	    s.add(4);
+	    s.add(5);
+	    s.add(6);
+	    s.add(7);
+	    s.add(8);
+	    s.add(9);
+	    
+	    permutationAll(s, new Stack<Integer>(), s.size());
+	}
+	
+	/**
+	 * Submethode zu permute().
+	 * Erstellt alle Permutationen aus der Reihe 1-9 und speichert diese in die globale LinkedListe allPerm
+	 * @param möglicheNummer die Reihe aus der eine Permutation erstellt werden soll.
+	 * @param permutation eine der vielen Permutationen der Reihe.
+	 * @param size Größe, des möglicheNummer Stacks; dient als "speicher-Bedingung".
+	 */
+	public static void permutationAll(Set<Integer> möglicheNummer, Stack<Integer> permutation, int size) {
+
+	    if(permutation.size() == size) {
+	    	LinkedList<Integer> temp = new LinkedList<Integer>();
+	    	
+	    	int k = 0;
+	    	for(int i = 0; i < permutation.size(); i++){
+	    		temp.add(k, permutation.get(i));
+	    		k++;
+	    	}
+	    	allPerm[allPermInd++] = temp;
+	    }
+
+	    Integer[] zahlen = möglicheNummer.toArray(new Integer[0]);
+	    
+	    for(Integer i : zahlen) {
+	        permutation.push(i);
+	        möglicheNummer.remove(i);
+	        permutationAll(möglicheNummer, permutation, size);
+	        möglicheNummer.add(permutation.pop());
+	    }
 	}
 	
 	/**
@@ -54,6 +107,20 @@ public class PuzzleRow implements RowSortable{
 			return grid;
 		}else{
 			System.out.println("PROKEMN");
+			LinkedList<LinkedList[]> allSpec = new LinkedList<LinkedList[]>();
+			Set<Integer> row = new HashSet<Integer>();
+			
+			for(int i = 0; i < 9; i++){
+				 row.add(grid.getRowValues(1)[i]);
+			}
+			
+			permutationSpecific(row, new Stack<Integer>(), row.size());
+		    
+			allSpec.add(specific);
+			for(int i = 0; i < allSpec.get(0).length; i++){
+				System.out.println(allSpec.get(0)[i]+", ");
+			}
+			
 		}
 		return null;
 	}
@@ -77,10 +144,7 @@ public class PuzzleRow implements RowSortable{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	@SuppressWarnings("rawtypes")
-	static LinkedList[] allPerm = new LinkedList[9*8*7*6*5*4*3*2];
-	static int allPermInd = 0;
+
 	
 	/**
 	 * Hilfsmethode zu hasRowConflictFree.
@@ -161,56 +225,7 @@ public class PuzzleRow implements RowSortable{
 		}		
 		return nullGrid;
 	}
-	
-	/**
-	 * Hilfsmethode zu der gesamten Klasse.
-	 * Erstellt das Set s und rift mit diesem die SubMethode permutation auf
-	 */
-	public static void permute(){
-		Set<Integer> s = new HashSet<Integer>();
-	    s.add(1);
-	    s.add(2);
-	    s.add(3);
-	    s.add(4);
-	    s.add(5);
-	    s.add(6);
-	    s.add(7);
-	    s.add(8);
-	    s.add(9);
-	    
-	    permutation(s, new Stack<Integer>(), s.size());
-	}
-	
-	/**
-	 * Submethode zu permute().
-	 * Erstellt alle Permutationen aus der Reihe 1-9 und speichert diese in die globale LinkedListe allPerm
-	 * @param möglicheNummer die Reihe aus der eine Permutation erstellt werden soll.
-	 * @param permutation eine der vielen Permutationen der Reihe.
-	 * @param size Größe, des möglicheNummer Stacks; dient als "speicher-Bedingung".
-	 */
-	public static void permutation(Set<Integer> möglicheNummer, Stack<Integer> permutation, int size) {
 
-	    if(permutation.size() == size) {
-	    	LinkedList<Integer> temp = new LinkedList<Integer>();
-	    	
-	    	int k = 0;
-	    	for(int i = 0; i < permutation.size(); i++){
-	    		temp.add(k, permutation.get(i));
-	    		k++;
-	    	}
-	    	allPerm[allPermInd++] = temp;
-	    }
-
-	    Integer[] zahlen = möglicheNummer.toArray(new Integer[0]);
-	    
-	    for(Integer i : zahlen) {
-	        permutation.push(i);
-	        möglicheNummer.remove(i);
-	        permutation(möglicheNummer, permutation, size);
-	        möglicheNummer.add(permutation.pop());
-	    }
-	}
-	
 	/**
 	 * Hilfsmethode zu der Methode getRowSortColBlock.
 	 * Überprüft alle Columns, ob in ihnen jede Zahl jeweils einmal vorkommt.
@@ -297,6 +312,32 @@ public class PuzzleRow implements RowSortable{
 		}else{
 			return 0;
 		}
+	}
+	
+	static LinkedList[] specific = new LinkedList[9*8*7*6*5*4*3*2];
+	static int specInd = 0;
+	
+	public static void permutationSpecific(Set<Integer> möglicheNummer, Stack<Integer> permutation, int size) {
+		
+	    if(permutation.size() == size) {
+	    	LinkedList<Integer> temp = new LinkedList<Integer>();
+	    	
+	    	int k = 0;
+	    	for(int i = 0; i < permutation.size(); i++){
+	    		temp.add(k, permutation.get(i));
+	    		k++;
+	    	}
+	    	specific[specInd++] = temp;
+	    }
+
+	    Integer[] zahlen = möglicheNummer.toArray(new Integer[0]);
+	    
+	    for(Integer i : zahlen) {
+	        permutation.push(i);
+	        möglicheNummer.remove(i);
+	        permutationSpecific(möglicheNummer, permutation, size);
+	        möglicheNummer.add(permutation.pop());
+	    }
 	}
 	
 	public void auslesen(int[] a){
