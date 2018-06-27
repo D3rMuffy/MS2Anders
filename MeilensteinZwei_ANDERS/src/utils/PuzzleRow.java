@@ -43,11 +43,11 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Submethode zu permute().
 	 * Erstellt alle Permutationen aus der Reihe 1-9 und speichert diese in die globale LinkedListe allPerm
-	 * @param möglicheNummer die Reihe aus der eine Permutation erstellt werden soll.
+	 * @param moeglicheNummer die Reihe aus der eine Permutation erstellt werden soll.
 	 * @param permutation eine der vielen Permutationen der Reihe.
-	 * @param size Größe, des möglicheNummer Stacks; dient als "speicher-Bedingung".
+	 * @param size Groesse, des moeglicheNummer Stacks; dient als "speicher-Bedingung".
 	 */
-	public static void permutationAll(Set<Integer> möglicheNummer, Stack<Integer> permutation, int size) {
+	public static void permutationAll(Set<Integer> moeglicheNummer, Stack<Integer> permutation, int size) {
 
 	    if(permutation.size() == size) {
 	    	LinkedList<Integer> temp = new LinkedList<Integer>();
@@ -60,18 +60,18 @@ public class PuzzleRow implements RowSortable{
 	    	allPerm[allPermInd++] = temp;
 	    }
 
-	    Integer[] zahlen = möglicheNummer.toArray(new Integer[0]);
+	    Integer[] zahlen = moeglicheNummer.toArray(new Integer[0]);
 	    
 	    for(Integer i : zahlen) {
 	        permutation.push(i);
-	        möglicheNummer.remove(i);
-	        permutationAll(möglicheNummer, permutation, size);
-	        möglicheNummer.add(permutation.pop());
+	        moeglicheNummer.remove(i);
+	        permutationAll(moeglicheNummer, permutation, size);
+	        moeglicheNummer.add(permutation.pop());
 	    }
 	}
 	
 	/**
-	 * Überprüft, ob es mindestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
+	 * Ueberprueft, ob es mindestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return grid Eine v-konfliktfreie Anordnung. Falls keine solche existiert, ein Nullergrid.
 	 */
@@ -91,7 +91,7 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	/**
-	 * Überprüft, ob es mindestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
+	 * Ueberprueft, ob es mindestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return boolean true, falls es eine v-konfliktfreie Anordnung gibt, false falls nicht.
 	 */
@@ -106,12 +106,12 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	/**
-	 * Überprüft, ob es mindestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
+	 * Ueberprueft, ob es mindestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
 	 * die Zahlen von 1-9 genau einmal vorkommen..
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
-	 * @return grid Es wird das input grid zurückgegeben, falls die Bedingungen von vorne herein erfüllt sind.
-	 * Es wird temp zurückgegeben, falls durch Tauschoperationen, eine Bedingung Erfüllende Konstellation gefunden wurde.
-	 * Es wird ein NullGrid zurückgegeben, falls es keine solche Konstellation gibt.
+	 * @return grid Es wird das input grid zurueckgegeben, falls die Bedingungen von vorne herein erfuellt sind.
+	 * Es wird temp zurueckgegeben, falls durch Tauschoperationen, eine Bedingung Erfuellende Konstellation gefunden wurde.
+	 * Es wird ein NullGrid zurueckgegeben, falls es keine solche Konstellation gibt.
 	 */
 	public Grid getRowSortColBlock(Grid grid) {
 		if(colValid(grid) == true && blockValid(grid) == true){
@@ -128,7 +128,7 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	/**
-	 * Überprüft, ob es mindestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
+	 * Ueberprueft, ob es mindestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
 	 * die Zahlen von 1-9 genau einmal vorkommen..
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return boolean true, falls es eine solche Anordnung gibt. false, falls nicht.
@@ -144,10 +144,10 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	/**
-	 * Überprüft, ob es mindestens eine Anordnung gibt, ein zulässig gefülltes Sudoku zu erhalten.
+	 * Ueberprueft, ob es mindestens eine Anordnung gibt, ein zulaessig gefuelltes Sudoku zu erhalten.
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
-	 * @return grid falls das Input Sudoku bereits zulässig gefüllt ist.
-	 * temp falls durch eine neue Anordnung der Rows ein zulässig gefülltes Sudoku entstand.
+	 * @return grid falls das Input Sudoku bereits zulaessig gefuellt ist.
+	 * temp falls durch eine neue Anordnung der Rows ein zulaessig gefuelltes Sudoku entstand.
 	 * nullGrid falls es keine solche Anordnung der Reihen gibt.
 	 */
 	public Grid getRowSudoku(Grid grid) {
@@ -165,7 +165,7 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	/**
-	 * Überprüft, ob es mindestens eine Anordnung gibt, ein zulässig gefülltes Sudoku zu erhalten.
+	 * Ueberprueft, ob es mindestens eine Anordnung gibt, ein zulaessig gefuelltes Sudoku zu erhalten.
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return boolean true, falls es eine solche Anordnung gibt. false, falls nicht.
 	 */
@@ -187,9 +187,9 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Hilfsmethode zu hasRowConflictFree.
-	 * Überprüft auf dem grid, ob es nur aus Nullen besteht - also ein Nullergrid ist.
+	 * Ueberprueft auf dem grid, ob es nur aus Nullen besteht - also ein Nullergrid ist.
 	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
-	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurückgegeben. Sonst false.
+	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurueckgegeben. Sonst false.
 	 */
 	public boolean isNullGrid(Grid temp) {
 		int nullCounter = 0;
@@ -213,10 +213,10 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Hilfsmethode zu getRowConflictFree, getRowSortColBlock, getRowSudoku.
-	 * Überprüft, bei call = 1, auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein v-konfliktfreies Sudoku entstehen kann.
-	 * Überprüft, bei call = 2, auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein Sudoku entsteht bei dem in jeder Spalte, Block die Zahlen von 1-9 genau einmal vorkommen.
-	 * Überprüft, bei call = 3, auf dem Sudoku, ob durch eine neue Anordnung ein zulässig gefülltes Sudoku entstehen kann.
-	 * @param grid Sudoku, auf dem die Zeilen neu angeordnet werden, um eine mögliche v-konfliktfreie Anordnung zu finden.
+	 * Ueberprueft, bei call = 1, auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein v-konfliktfreies Sudoku entstehen kann.
+	 * Ueberprueft, bei call = 2, auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein Sudoku entsteht bei dem in jeder Spalte, Block die Zahlen von 1-9 genau einmal vorkommen.
+	 * Ueberprueft, bei call = 3, auf dem Sudoku, ob durch eine neue Anordnung ein zulaessig gefuelltes Sudoku entstehen kann.
+	 * @param grid Sudoku, auf dem die Zeilen neu angeordnet werden, um eine moegliche v-konfliktfreie Anordnung zu finden.
 	 * @param call 1, falls von getRowConflictFree aufgerufen. 2, falls von getRowSortConflictFree aufgerufen. 3, falls von getRowSudoku aufgerufen.
 	 * @return grid Eine v-konfliktfreie Anordnung. Falls keine solche existiert, ein Nullergrid.
 	 */
@@ -249,8 +249,8 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Hilfsmethode zu getRowConflictFree.
-	 * Überprüft, ob das gegebene Grid nicht schon v-konfliktfrei ist.
-	 * @param grid Das Grid, auf dem geprüft wird, ob es bereits v-konfliktfrei ist.
+	 * Ueberprueft, ob das gegebene Grid nicht schon v-konfliktfrei ist.
+	 * @param grid Das Grid, auf dem geprueft wird, ob es bereits v-konfliktfrei ist.
 	 * @return boolean true, falls v-konfliktfrei. false, falls nicht.
 	 */
 	public boolean isConflictFree(Grid grid) {
@@ -266,8 +266,8 @@ public class PuzzleRow implements RowSortable{
 	}
 	
 	/**
-	 * Erzeugt ein Grid und füllt es mit Nullen.
-	 * @return grid Das mit Nullen befüllte Sudoku bzw Grid
+	 * Erzeugt ein Grid und fuellt es mit Nullen.
+	 * @return grid Das mit Nullen befuellte Sudoku bzw Grid
 	 */
 	public Grid returnNullGrid(){
 		Grid nullGrid = new Grid(9);
@@ -281,8 +281,8 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Hilfsmethode zu der Methode getRowSortColBlock.
-	 * Überprüft alle Columns, ob in ihnen jede Zahl jeweils einmal vorkommt.
-	 * @param grid Das Sudoku auf dem geprüft wird
+	 * Ueberprueft alle Columns, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true, falls jede Zahl in jeder Col einmal vorkommt. false, falls nicht.
 	 */
 	public boolean colValid(Grid grid){
@@ -310,8 +310,8 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Hilfsmethode zu der Methode getRowSudoku.
-	 * Überprüft alle Rows, ob in ihnen jede Zahl jeweils einmal vorkommt.
-	 * @param grid Das Sudoku auf dem geprüft wird
+	 * Ueberprueft alle Rows, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true, falls jede Zahl in jeder Row einmal vorkommt. false, falls nicht.
 	 */
 	public boolean rowValid(Grid grid){
@@ -339,8 +339,8 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Hilfsmethode zu der Methode getRowSortColBlock.
-	 * Überprüft alle Blocks, ob in ihnen jede Zahl jeweils einmal vorkommt.
-	 * @param grid Das Sudoku auf dem geprüft wird
+	 * Ueberprueft alle Blocks, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true, falls jede Zahl in jedem Block einmal vorkommt. false, falls nicht.
 	 */
 	public boolean blockValid(Grid grid){
@@ -361,8 +361,8 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Submethode zu der Methode blockValid.
-	 * Über die Ankerzelle, die übergeben wird, wird der gesamte Block ermittelt und durchlaufen
-	 * @param grid Das Sudoku auf dem geprüft wird
+	 * Ueber die Ankerzelle, die uebergeben wird, wird der gesamte Block ermittelt und durchlaufen
+	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @param a Ankerzelle eines Blocks
 	 * @return int 1 falls eine Zahl mehr als einmal pro BLock vorkommt. 0 falls nicht.
 	 */
