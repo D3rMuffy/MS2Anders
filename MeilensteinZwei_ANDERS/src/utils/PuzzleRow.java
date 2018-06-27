@@ -102,7 +102,14 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 
-	
+	/**
+	 * Überprüft, ob es midnestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
+	 * die Zahlen von 1-9 genau einmal vorkommen..
+	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
+	 * @return grid Es wird das input grid zurückgegeben, falls die Bedingungen von vorne herein erfüllt sind.
+	 * Es wird temp zurückgegeben, falls durch Tauschoperationen, eine Bedingung Erfüllende Konstellation gefunden wurde.
+	 * Es wird ein NullGrid zurückgegeben, falls es keine solche Konstellation gibt.
+	 */
 	public Grid getRowSortColBlock(Grid grid) {
 		if(colValid(grid) == true && blockValid(grid) == true){
 			return grid;
@@ -117,9 +124,20 @@ public class PuzzleRow implements RowSortable{
 		return null;
 	}
 
+	/**
+	 * Überprüft, ob es midnestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
+	 * die Zahlen von 1-9 genau einmal vorkommen..
+	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
+	 * @return boolean true, falls es eine solche Anordnung gibt. false, falls nicht.
+	 */
 	public boolean hasRowSortColBlock(Grid grid) {
-		// TODO Auto-generated method stub
-		return false;
+		Grid temp = getRowSortColBlock(grid);
+		
+		if(isNullGrid(temp) == true){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	public Grid getRowSudoku(Grid grid) {
@@ -164,6 +182,13 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
+	/*
+	 * Hilfsmethode zu getRowSortColBlock.
+	 * Überprüft auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein Sudoku entstehen kann,
+	 * bei dem in allen Spalten und Blöcken die Zahlen von 1-9 nur einmal vorkommen.
+	 * @param grid Sudoku, auf dem die Zeilen neu angeordnet werden, um eine Bedingung erfüllende Anordnung zu finden.
+	 * @return temp Eine Bedingung erfüllende Anordnung. null, falls es eine solche Anordnung nicht gibt.
+	 */
 	private Grid changeGetRSCB(Grid grid) {
 		Grid temp = new Grid(9);
 	    
@@ -322,32 +347,7 @@ public class PuzzleRow implements RowSortable{
 			return 0;
 		}
 	}
-	
-	static LinkedList[] specific = new LinkedList[9*8*7*6*5*4*3*2];
-	static int specInd = 0;
-	
-	public static void permutationSpecific(Set<Integer> möglicheNummer, Stack<Integer> permutation, int size) {
-		
-	    if(permutation.size() == size) {
-	    	LinkedList<Integer> temp = new LinkedList<Integer>();
-	    	
-	    	int k = 0;
-	    	for(int i = 0; i < permutation.size(); i++){
-	    		temp.add(k, permutation.get(i));
-	    		k++;
-	    	}
-	    	specific[specInd++] = temp;
-	    }
 
-	    Integer[] zahlen = möglicheNummer.toArray(new Integer[0]);
-	    
-	    for(Integer i : zahlen) {
-	        permutation.push(i);
-	        möglicheNummer.remove(i);
-	        permutationSpecific(möglicheNummer, permutation, size);
-	        möglicheNummer.add(permutation.pop());
-	    }
-	}
 	
 	public void auslesen(int[] a){
 		for(int i = 0; i < a.length; i++){

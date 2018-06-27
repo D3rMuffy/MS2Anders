@@ -71,9 +71,10 @@ public class App {
 		
 		System.out.println("\nHasRowConflictFree: " + cab.hasRowConflictFree(a));
 		
-		System.out.println("getRowSortColBlock: ");
+		System.out.println("\ngetRowSortColBlock: ");
 		(cab.getRowSortColBlock(a)).print();
 		
+		System.out.println("\nHasRowSortColBlock: " + cab.hasRowSortColBlock(a));
 	}
 
 	public static void callSolveRowBased(Grid a, Grid b, RowUtils abc){
