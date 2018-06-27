@@ -77,7 +77,7 @@ public class PuzzleRow implements RowSortable{
 		if(isConflictFree(grid) == true){
 			return grid;
 		}else{
-			Grid temp = changeAll(grid);
+			Grid temp = changeGetRCF(grid);
 			
 			if(temp == null){
 				return returnNullGrid();
@@ -102,72 +102,19 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 
+	
 	public Grid getRowSortColBlock(Grid grid) {
 		if(colValid(grid) == true && blockValid(grid) == true){
 			return grid;
 		}else{
-			Grid temp = new Grid(9);
-			
-			for(int allPermInd = 0; allPermInd < allPerm.length; allPermInd++){		    	
-		    	for(int rInd = 1; rInd < 10; rInd++){
-			   		temp.setRowValues(rInd, grid.getRowValues((int) (allPerm[allPermInd]).get(rInd-1)));
-			   	}
-			   	if(colValid(temp) == true && blockValid(temp) == true){
-			   		return temp;
-			   	}
+			Grid temp = changeGetRSCB(grid);			
+			if(temp == null){
+				return returnNullGrid();
+			}else if(temp != null){
+				return temp;
 			}
-			
-			boolean stop = false;
-			int rowInd = 1;
-			
-			while(stop == false && rowInd < 10){
-				
-				stop = checkSingleRow(rowInd, grid, temp);
-				rowInd++;
-			}
-			
 		}
 		return null;
-	}
-	
-	public boolean checkSingleRow(int i, Grid grid, Grid temp){
-		temp = grid;
-		LinkedList<LinkedList[]> allSpec = new LinkedList<LinkedList[]>();
-		
-		if(i > 1){
-			temp.setRowValues(i-1, grid.getRowValues(i-1));
-		}
-		addRow(i, grid);
-		allSpec.add(specific);
-		
-		for(int specInd = 0; specInd < specific.length; specInd++){
-			int[] row = new int[9];
-			
-			for(int permInd = 0; permInd < specific[specInd].size(); permInd++){
-				
-				row[permInd] = (int) specific[specInd].get(permInd);
-			}
-			temp.setRowValues(i, row);
-			temp.print();
-		}
-		
-		if(colValid(temp) == true && blockValid(temp) == true){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	public void addRow(int rInd, Grid grid){
-		LinkedList[] empty = new LinkedList[9*8*7*6*5*4*3*2];
-		specific = empty;
-		
-		Set<Integer> row = new HashSet<Integer>();
-		for(int i = 0; i < 9; i++){
-			 row.add(grid.getRowValues(rInd)[i]);
-		}
-		specInd = 0;
-		permutationSpecific(row, new Stack<Integer>(), row.size());
 	}
 
 	public boolean hasRowSortColBlock(Grid grid) {
@@ -217,13 +164,30 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
+	private Grid changeGetRSCB(Grid grid) {
+		Grid temp = new Grid(9);
+	    
+	    if(allPerm != null){
+		    for(int allPermInd = 0; allPermInd < allPerm.length; allPermInd++){		    	
+	    		for(int rInd = 1; rInd < 10; rInd++){
+		    		temp.setRowValues(rInd, grid.getRowValues((int) (allPerm[allPermInd]).get(rInd-1)));
+		    	}
+	    		
+		    	if(colValid(temp) == true && blockValid(temp) == true){
+		    		return temp;
+		    	}
+		    }
+	    }
+		return null;
+	}
+	
 	/**
 	 * Hilfsmethode zu getRowConflictFree.
 	 * Überprüft auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein v-konfliktfreies Sudoku entstehen kann.
 	 * @param grid Sudoku, auf dem die Zeilen neu angeordnet werden, um eine mögliche v-konfliktfreie Anordnung zu finden.
 	 * @return grid Eine v-konfliktfreie Anordnung. Falls keine solche existiert, ein Nullergrid.
 	 */
-	private Grid changeAll(Grid grid) {
+	private Grid changeGetRCF(Grid grid) {
 		Grid temp = new Grid(9);
 	    
 	    if(allPerm != null){
