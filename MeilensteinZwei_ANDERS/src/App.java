@@ -16,16 +16,16 @@ public class App {
 		GridUtils3 cba = new GridUtils3();
 		PuzzleRow cab = new PuzzleRow();
 		
-		//getRowSudoku INPUT		
-		int[] row1 = {+8,+1,+6,+7,+3,+4,+2,+5,+9};
-		int[] row2 = {+1,+6,+8,+9,+4,+2,+5,+3,+7};
-		int[] row3 = {+6,+8,+2,+1,+9,+3,+7,+4,+5};
-		int[] row4 = {+3,+7,+4,+2,+6,+5,+8,+9,+1};
-		int[] row5 = {+2,+3,+5,+6,+1,+9,+4,+7,+8};
-		int[] row6 = {+7,+2,+3,+8,+5,+1,+9,+6,+4};
-		int[] row7 = {+4,+5,+9,+3,+7,+6,+1,+8,+2};
-		int[] row8 = {+9,+4,+7,+5,+2,+8,+6,+1,+3};
-		int[] row9 = {+5,+9,+1,+4,+8,+7,+3,+2,+6};
+		//putNumberColBlock INPUT
+		int[] row1 = {+5,-1,-1,-1,-1,-1,-1,-1,-1};
+		int[] row2=  {-1,+2,-1,-1,-1,-1,-1,+5,-1};
+		int[] row3 = {-1,-1,+7,+7,+7,-1,-1,-1,-1};
+		int[] row4 = {-1,-1,-1,-1,+5,-1,-1,-1,-1};
+		int[] row5 = {-1,-1,-1,-1,+3,-1,-1,-1,+5};
+		int[] row6 = {-1,+5,-1,-1,-1,-1,-1,-1,-1};
+		int[] row7 = {-1,-1,+5,-1,-1,-1,-1,-1,-1};
+		int[] row8 = {-1,-1,+4,-1,-1,-1,-1,-1,-1};
+		int[] row9 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 				
 		//TWO TURN
 		int[] row11 = {+9,-1,-1,-1,-1,-1,-1,-1,-1};
@@ -66,20 +66,22 @@ public class App {
 	}
 	
 	public static void callPuzzleRow(Grid a, PuzzleRow cab){
-		System.out.println("GetRowConflictFree:");
-		(cab.getRowConflictFree(a)).print();
+//		System.out.println("GetRowConflictFree:");
+//		(cab.getRowConflictFree(a)).print();
+//		
+//		System.out.println("\nHasRowConflictFree: " + cab.hasRowConflictFree(a));
+//		
+//		System.out.println("\ngetRowSortColBlock: ");
+//		(cab.getRowSortColBlock(a)).print();
+//		
+//		System.out.println("\nHasRowSortColBlock: " + cab.hasRowSortColBlock(a));
+//		
+//		System.out.println("\ngetRowSudoku: ");
+//		(cab.getRowSudoku(a)).print();
+//		
+//		System.out.println("\nHasRowSudoku: " + cab.hasRowSudoku(a));
 		
-		System.out.println("\nHasRowConflictFree: " + cab.hasRowConflictFree(a));
-		
-		System.out.println("\ngetRowSortColBlock: ");
-		(cab.getRowSortColBlock(a)).print();
-		
-		System.out.println("\nHasRowSortColBlock: " + cab.hasRowSortColBlock(a));
-		
-		System.out.println("\ngetRowSudoku: ");
-		(cab.getRowSudoku(a)).print();
-		
-		System.out.println("\nHasRowSudoku: " + cab.hasRowSudoku(a));
+		System.out.println("\nputNumberColBlock: " + cab.putNumberColBlock(a, 5));
 	}
 
 	public static void callSolveRowBased(Grid a, Grid b, RowUtils abc){

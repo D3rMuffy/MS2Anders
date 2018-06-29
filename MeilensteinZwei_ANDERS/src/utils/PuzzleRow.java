@@ -180,10 +180,91 @@ public class PuzzleRow implements RowSortable{
 	}
 
 	public int putNumberColBlock(Grid grid, int number) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(isPartyFilled(grid) == false){
+			return 0;
+		}else{
+			LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
+			
+			
+			return 99;
+		}
+	}
+	
+	public LinkedList<Cell> getPossibleCells(Grid grid, int number){
+		LinkedList<Cell> possibleCells = new LinkedList<Cell>();
+		LinkedList<Cell> blocks = blocksWithoutNumber(grid, number);
+	
+		for(int blocksInd = 0; blocksInd < blocks.size(); blocksInd++){
+			
+			int blockCol = blocks.get(blocksInd).getcIndex() - ((blocks.get(blocksInd).getcIndex()-1)%3);
+			int blockRow = blocks.get(blocksInd).getrIndex() - ((blocks.get(blocksInd).getrIndex()-1)%3);
+			
+			for(int i = blockRow; i < blockRow+3; i++){
+				for(int j = blockCol; j < blockCol+3; j++){
+					
+					if(possibleForNumber(grid, grid.getCell(i, j), number) == true){
+						possibleCells.add(grid.getCell(i, j));
+					}
+				}
+			}
+		}
+		
+		return possibleCells;
+	}
+	
+	public LinkedList<Cell> blocksWithoutNumber(Grid grid, int number){
+		LinkedList<Cell> allBlocks = new LinkedList<Cell>();
+		allBlocks.add(grid.getCell(1, 1));
+		allBlocks.add(grid.getCell(1, 4));
+		allBlocks.add(grid.getCell(1, 7));
+		allBlocks.add(grid.getCell(4, 1));
+		allBlocks.add(grid.getCell(4, 4));
+		allBlocks.add(grid.getCell(4, 7));
+		allBlocks.add(grid.getCell(7, 1));
+		allBlocks.add(grid.getCell(7, 4));
+		allBlocks.add(grid.getCell(7, 7));
+		
+		LinkedList<Cell> temp = new LinkedList<Cell>();
+		
+		for(int ABInd = 0; ABInd < allBlocks.size(); ABInd++){
+				
+			int blockCol = (allBlocks.get(ABInd).getcIndex() - ((allBlocks.get(ABInd).getcIndex()-1)%3));
+			int blockRow = (allBlocks.get(ABInd).getrIndex() - ((allBlocks.get(ABInd).getrIndex()-1)%3));
+			Cell tempBlockAnchor = new Cell(blockRow, blockCol);
+			int dontSaveBlock = 0;
+			
+			for(int i = blockRow; i < blockRow+3; i++){
+				for(int j = blockCol; j < blockCol+3; j++){	
+					
+					if(grid.getValue(i, j) == number){
+						dontSaveBlock++;
+					}
+				}
+			}
+			
+			if(dontSaveBlock == 0){
+					temp.add(tempBlockAnchor);
+			}
+		}
+		return temp;
 	}
 
+	public boolean possibleForNumber(Grid grid, Cell a, int number){
+		int nope = 0;
+		
+		for(int i = 0; i < 9; i++){
+			if(grid.getColValues(a.getcIndex())[i] == number){
+				nope++;
+			}
+		}
+		
+		if(a.getValue() == -1 && nope == 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	
 	/**
 	 * Hilfsmethode zu hasRowConflictFree.
@@ -392,6 +473,24 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 
+	public boolean isPartyFilled(Grid grid){
+		int minCounter = 0;
+		
+		for(int row = 1; row < 10; row++){
+			for(int col = 1; col < 10; col++){
+				
+				if(grid.getCell(row, col).getValue() == -1){
+					minCounter++;
+				}
+			}
+		}
+		
+		if(minCounter == 0){
+			return false;
+		}else{
+			return true;
+		}
+	}
 	
 	public void auslesen(int[] a){
 		for(int i = 0; i < a.length; i++){
