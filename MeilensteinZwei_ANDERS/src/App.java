@@ -81,7 +81,7 @@ public class App {
 //		
 //		System.out.println("\nHasRowSudoku: " + cab.hasRowSudoku(a));
 		
-		System.out.println("\nputNumberColBlock: " + cab.putNumberColBlock(a, 1));
+		System.out.println("\nputNumberColBlock: " + cab.putNumberColBlock(a, 5));
 	}
 
 	public static void callSolveRowBased(Grid a, Grid b, RowUtils abc){

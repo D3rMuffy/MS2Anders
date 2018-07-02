@@ -185,9 +185,7 @@ public class PuzzleRow implements RowSortable{
 		}else{
 			if(rulesConfirmed(grid, number) == true){
 				LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
-				System.out.println(possibleCells.size());
-			
-//				LinkedList<Cell> possibleTemp = possibleCells;
+
 				setNumber(grid, possibleCells, number);
 				return allGrids.size();
 			}else{
@@ -200,54 +198,106 @@ public class PuzzleRow implements RowSortable{
 	
 	public void setNumber(Grid grid, LinkedList<Cell> possibleCells, int number){
 		
-		LinkedList<Cell> possibleTemp = (LinkedList<Cell>) possibleCells.clone();
-		
 		Grid temp = new Grid(9);
-		for(int i = 0; i < temp.getColValues(1).length; i++){
-			temp.setRowValues(i+1, grid.getRowValues(i+1));
+		for(int i = 1; i < 10; i++){
+			temp.setRowValues(i, grid.getRowValues(i));
 		}
 		
-//		System.out.println(possibleTemp.isEmpty());
-		if(possibleTemp.isEmpty() == false){
-				
-			for(int i = 0; i < possibleTemp.size(); i++){
-//				System.out.println("HIER MIT " + i);
-				System.out.println(possibleTemp.size());
-				auslesen(possibleTemp);
-							
-				Cell filled = possibleTemp.get(i); filled.setValue(number);
-//				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
-								
-				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
+		LinkedList<Cell> tempPC = (LinkedList<Cell>) possibleCells.clone();
+		System.out.println(tempPC.size());
+		auslesen(tempPC);
 		
-//				System.out.print("DANACH ");auslesen(possibleTemp);
-				setNumber(temp, newPossibleTemp, number);
-			} 				
-				
-//			while(possibleTemp.isEmpty() == false){
-//
+		while(tempPC.isEmpty() == false){
+			Cell filled = tempPC.removeFirst();
+			System.out.println("filled: " + filled.getrIndex() + ", " + filled.getcIndex());
+			
+			System.out.println("remove, now " + tempPC.size()); auslesen(tempPC);
+			
+			temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+			LinkedList<Cell> newTempPC = getPossible(filled, tempPC);
+			
+			setNumber(temp, newTempPC, number);
+		}
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+//		LinkedList<Cell> possibleTemp = (LinkedList<Cell>) possibleCells.clone();
+//		
+//		Grid temp = new Grid(9);
+//		for(int i = 0; i < temp.getColValues(1).length; i++){
+//			temp.setRowValues(i+1, grid.getRowValues(i+1));
+//		}
+//		
+////		System.out.println(possibleTemp.isEmpty());
+//		if(possibleTemp.isEmpty() == false){
+//				
+//			for(int i = 0; i < possibleTemp.size(); i++){
+////				System.out.println("HIER MIT " + i);
 //				System.out.println(possibleTemp.size());
 //				auslesen(possibleTemp);
-//				
-//				Cell filled = possibleTemp.removeFirst(); filled.setValue(number);
+//							
+//				Cell filled = possibleTemp.get(i); filled.setValue(number);
 ////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
-//				
+//								
 //				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
 //				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
-//
+//		
+////				System.out.print("DANACH ");auslesen(possibleTemp);
 //				setNumber(temp, newPossibleTemp, number);
-//			} 
-			
-		}else{				
-//			for(int i = 0; i < temp.getColValues(1).length; i++){
-//				temp.setRowValues(i+1, grid.getRowValues(i+1));
-//			}
-				
-			allGrids.add(temp);
-//			temp.print();
-//			System.out.println("");
-		}
+//			} 				
+//				
+////			while(possibleTemp.isEmpty() == false){
+////
+////				System.out.println(possibleTemp.size());
+////				auslesen(possibleTemp);
+////				
+////				Cell filled = possibleTemp.removeFirst(); filled.setValue(number);
+//////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
+////				
+////				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+////				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
+////
+////				setNumber(temp, newPossibleTemp, number);
+////			} 
+//			
+//		}else{				
+////			for(int i = 0; i < temp.getColValues(1).length; i++){
+////				temp.setRowValues(i+1, grid.getRowValues(i+1));
+////			}
+//				
+//			allGrids.add(temp);
+////			temp.print();
+////			System.out.println("");
+//		}
 	}
 	
 	public LinkedList<Cell>	getPossible(Cell filled, LinkedList<Cell> possibleTemp){
