@@ -183,11 +183,116 @@ public class PuzzleRow implements RowSortable{
 		if(isPartyFilled(grid) == false){
 			return 0;
 		}else{
-			LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
+			if(rulesConfirmed(grid, number) == true){
+				LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
+				System.out.println(possibleCells.size());
 			
-			
-			return 99;
+//				LinkedList<Cell> possibleTemp = possibleCells;
+				setNumber(grid, possibleCells, number);
+				return allGrids.size();
+			}else{
+				return 0;
+			}
 		}
+	}
+	
+	LinkedList<Grid> allGrids = new LinkedList<Grid>();
+	
+	public void setNumber(Grid grid, LinkedList<Cell> possibleCells, int number){
+		
+		LinkedList<Cell> possibleTemp = (LinkedList<Cell>) possibleCells.clone();
+		
+		Grid temp = new Grid(9);
+		for(int i = 0; i < temp.getColValues(1).length; i++){
+			temp.setRowValues(i+1, grid.getRowValues(i+1));
+		}
+		
+//		System.out.println(possibleTemp.isEmpty());
+		if(possibleTemp.isEmpty() == false){
+				
+			for(int i = 0; i < possibleTemp.size(); i++){
+//				System.out.println("HIER MIT " + i);
+				System.out.println(possibleTemp.size());
+				auslesen(possibleTemp);
+							
+				Cell filled = possibleTemp.get(i); filled.setValue(number);
+//				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
+								
+				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
+		
+//				System.out.print("DANACH ");auslesen(possibleTemp);
+				setNumber(temp, newPossibleTemp, number);
+			} 				
+				
+//			while(possibleTemp.isEmpty() == false){
+//
+//				System.out.println(possibleTemp.size());
+//				auslesen(possibleTemp);
+//				
+//				Cell filled = possibleTemp.removeFirst(); filled.setValue(number);
+////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
+//				
+//				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+//				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
+//
+//				setNumber(temp, newPossibleTemp, number);
+//			} 
+			
+		}else{				
+//			for(int i = 0; i < temp.getColValues(1).length; i++){
+//				temp.setRowValues(i+1, grid.getRowValues(i+1));
+//			}
+				
+			allGrids.add(temp);
+//			temp.print();
+//			System.out.println("");
+		}
+	}
+	
+	public LinkedList<Cell>	getPossible(Cell filled, LinkedList<Cell> possibleTemp){
+		
+		//COLUMN CHECK
+		int found = 1;
+		stopwhile:while(found > 0){
+			found = 0;
+			
+			for(int i = 0; i < possibleTemp.size(); i++){
+				if(possibleTemp.get(i).getcIndex() == filled.getcIndex()){
+					possibleTemp.remove(i);
+					found++;
+				}
+			}
+			
+			if(found == 0){
+				break stopwhile;
+			}
+		}
+		
+		//BLOCK CHECK
+		int filledBlockCol = (filled.getcIndex() - ((filled.getcIndex()-1)%3));
+		int filledBlockRow = (filled.getrIndex() - ((filled.getrIndex()-1)%3));
+		found = 1;
+		
+		stopwhile2:while(found > 0){
+			found = 0;
+			
+			for(int i = 0; i < possibleTemp.size(); i++){
+				int delBlockCol = (possibleTemp.get(i).getcIndex() - ((possibleTemp.get(i).getcIndex()-1)%3));
+				int delBlockRow = (possibleTemp.get(i).getrIndex() - ((possibleTemp.get(i).getrIndex()-1)%3));
+				
+				if(filledBlockCol == delBlockCol && filledBlockRow == delBlockRow){
+					possibleTemp.remove(i);
+					found++;
+				}
+			}
+			
+			if(found == 0){
+				break stopwhile2;
+			}
+		}
+		
+		return possibleTemp;
 	}
 	
 	public LinkedList<Cell> getPossibleCells(Grid grid, int number){
@@ -265,6 +370,38 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
+	public boolean rulesConfirmed(Grid grid, int number){
+		LinkedList<Cell> blocksWithoutNumber = blocksWithoutNumber(grid, number);
+		int nope = 0;
+		boolean answer = true;
+		
+		label1:for(int k = 0; k < blocksWithoutNumber.size(); k++){
+			nope = 0;
+			LinkedList<Cell> oneBlock = new LinkedList<Cell>();
+			
+			for(int i = blocksWithoutNumber.get(k).getrIndex(); i < blocksWithoutNumber.get(k).getrIndex() + 3; i++){
+				for(int j = blocksWithoutNumber.get(k).getcIndex(); j < blocksWithoutNumber.get(k).getcIndex() + 3; j++){
+					
+					oneBlock.add(grid.getCell(i, j));
+					
+				}
+			}
+			
+			for(int i = 0; i < oneBlock.size(); i++){
+				if(possibleForNumber(grid, oneBlock.get(i), number) == true){
+					nope++;
+//					System.out.println(nope + " with " + oneBlock.get(i).getrIndex() + ", " + oneBlock.get(i).getcIndex());
+				}
+			}
+			
+			if(nope == 0){
+				answer = false;
+				break label1;
+			}
+		}
+		
+		return answer;
+	}
 	
 	/**
 	 * Hilfsmethode zu hasRowConflictFree.
@@ -497,6 +634,16 @@ public class PuzzleRow implements RowSortable{
 			System.out.print(a[i] + ",");
 		}
 		System.out.println("");
+	}
+	
+	public void auslesen(LinkedList<Cell> a){
+		for(int i = 0; i < a.size(); i++){
+			System.out.println(a.get(i).getrIndex() + ", " + a.get(i).getcIndex());
+		}
+		
+		if(a.isEmpty() == true){
+			System.out.println("EMPTY");
+		}
 	}
 	
 
