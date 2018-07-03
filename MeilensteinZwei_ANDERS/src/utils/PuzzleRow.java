@@ -184,165 +184,206 @@ public class PuzzleRow implements RowSortable{
 			return 0;
 		}else{
 			if(rulesConfirmed(grid, number) == true){
-				LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
+				LinkedList[] columns = sortFixedAndPossible(grid, number);
+//				auslesen(columns);
+				
+				startRecursion(grid, number, columns);
 
-				setNumber(grid, possibleCells, number);
-				return allGrids.size();
+//				setNumber(grid, possibleCells, number);
+				return counter;
 			}else{
 				return 0;
 			}
 		}
 	}
 	
-	LinkedList<Grid> allGrids = new LinkedList<Grid>();
-	
-	public void setNumber(Grid grid, LinkedList<Cell> possibleCells, int number){
-		
-		Grid temp = new Grid(9);
-		for(int i = 1; i < 10; i++){
-			temp.setRowValues(i, grid.getRowValues(i));
+	public void startRecursion(Grid grid, int number, LinkedList[] columns){
+		for(int i = 0; i < columns.length; i++){
+			if(columns[i].size() > 1){
+				
+				for(int j = 0; j < columns[i].size(); j++){
+					emptyWay();
+					cellWay.add((Cell) columns[i].get(j));
+//					System.out.println(i + " " + j);
+					recursion(grid, number, i, j,  columns);
+//					System.out.println("Counter: " + counter);
+				}
+				break;
+			}
 		}
-		
-		LinkedList<Cell> tempPC = (LinkedList<Cell>) possibleCells.clone();
-		System.out.println(tempPC.size());
-		auslesen(tempPC);
-		
-		while(tempPC.isEmpty() == false){
-			Cell filled = tempPC.removeFirst();
-			System.out.println("filled: " + filled.getrIndex() + ", " + filled.getcIndex());
-			
-			System.out.println("remove, now " + tempPC.size()); auslesen(tempPC);
-			
-			temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-			LinkedList<Cell> newTempPC = getPossible(filled, tempPC);
-			
-			setNumber(temp, newTempPC, number);
-		}
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		LinkedList<Cell> possibleTemp = (LinkedList<Cell>) possibleCells.clone();
-//		
-//		Grid temp = new Grid(9);
-//		for(int i = 0; i < temp.getColValues(1).length; i++){
-//			temp.setRowValues(i+1, grid.getRowValues(i+1));
-//		}
-//		
-////		System.out.println(possibleTemp.isEmpty());
-//		if(possibleTemp.isEmpty() == false){
-//				
-//			for(int i = 0; i < possibleTemp.size(); i++){
-////				System.out.println("HIER MIT " + i);
-//				System.out.println(possibleTemp.size());
-//				auslesen(possibleTemp);
-//							
-//				Cell filled = possibleTemp.get(i); filled.setValue(number);
-////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
-//								
-//				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-//				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
-//		
-////				System.out.print("DANACH ");auslesen(possibleTemp);
-//				setNumber(temp, newPossibleTemp, number);
-//			} 				
-//				
-////			while(possibleTemp.isEmpty() == false){
-////
-////				System.out.println(possibleTemp.size());
-////				auslesen(possibleTemp);
-////				
-////				Cell filled = possibleTemp.removeFirst(); filled.setValue(number);
-//////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
-////				
-////				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-////				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
-////
-////				setNumber(temp, newPossibleTemp, number);
-////			} 
-//			
-//		}else{				
-////			for(int i = 0; i < temp.getColValues(1).length; i++){
-////				temp.setRowValues(i+1, grid.getRowValues(i+1));
-////			}
-//				
-//			allGrids.add(temp);
-////			temp.print();
-////			System.out.println("");
-//		}
 	}
 	
-	public LinkedList<Cell>	getPossible(Cell filled, LinkedList<Cell> possibleTemp){
+	LinkedList<Cell> cellWay = new LinkedList<Cell>();
+	int counter = 0;
+	
+	public void recursion(Grid grid, int number, int col, int row, LinkedList[] columns){
+//		auslesen(cellWay);
+//		System.out.println("-");
 		
-		//COLUMN CHECK
-		int found = 1;
-		stopwhile:while(found > 0){
-			found = 0;
-			
-			for(int i = 0; i < possibleTemp.size(); i++){
-				if(possibleTemp.get(i).getcIndex() == filled.getcIndex()){
-					possibleTemp.remove(i);
-					found++;
-				}
-			}
-			
-			if(found == 0){
-				break stopwhile;
-			}
-		}
-		
-		//BLOCK CHECK
-		int filledBlockCol = (filled.getcIndex() - ((filled.getcIndex()-1)%3));
-		int filledBlockRow = (filled.getrIndex() - ((filled.getrIndex()-1)%3));
-		found = 1;
-		
-		stopwhile2:while(found > 0){
-			found = 0;
-			
-			for(int i = 0; i < possibleTemp.size(); i++){
-				int delBlockCol = (possibleTemp.get(i).getcIndex() - ((possibleTemp.get(i).getcIndex()-1)%3));
-				int delBlockRow = (possibleTemp.get(i).getrIndex() - ((possibleTemp.get(i).getrIndex()-1)%3));
+		if(col == 0){
+			if(columns[col+1].size() == 1){
+				Cell fix = (Cell) columns[col+1].get(0);
+				cellWay.add(fix);
+				recursion(grid, number, col+1, (fix.getrIndex()-1), columns);
 				
-				if(filledBlockCol == delBlockCol && filledBlockRow == delBlockRow){
-					possibleTemp.remove(i);
-					found++;
+			}else if(columns[col+1].size() > 1){
+				for(int i = 0; i < columns[col+1].size(); i++){
+					Cell c = (Cell) columns[col+1].get(i);
+					cellWay.add(c);
+					recursion(grid, number, col+1, i, columns);
 				}
+			}			
+		}else if(col == 1){
+			if(columns[col+1].size() == 1){
+				Cell fix = (Cell) columns[col+1].get(0);
+				cellWay.add(fix);
+				recursion(grid, number, col+1, (fix.getrIndex()-1), columns);
+				
+			}else if(columns[col+1].size() > 1){
+				Cell b = cellWay.get(cellWay.size()-1);
+				Cell c = null;
+				
+				for(int i = 0; i < columns[col+1].size(); i++){
+					c = (Cell) columns[col+1].get(i);
+					if(compare(b, c) == true){
+						cellWay.add(c);
+						recursion(grid, number, col+1, i, columns);
+					}
+					
+				}
+				
 			}
 			
-			if(found == 0){
-				break stopwhile2;
+			
+		}else if(col < 8 && col > 1){
+			if(columns[col+1].size() == 1){
+				Cell fix = (Cell) columns[col+1].get(0);
+				cellWay.add(fix);
+//				System.out.println(col+1 + " " + (fix.getrIndex()-1));
+				recursion(grid, number, col+1, (fix.getrIndex()-1), columns);
+				
+			}else if(columns[col+1].size() > 1){
+//				System.out.println("schau mal nach");
+				Cell a = cellWay.get(cellWay.size()-2);
+				Cell b = cellWay.get(cellWay.size()-1);
+				Cell c = null;
+				
+				for(int i = 0; i < columns[col+1].size(); i++){
+					c = (Cell) columns[col+1].get(i);
+					if(compare(a, b, c) == true){
+						cellWay.add(c);
+						recursion(grid, number, col+1, i, columns);
+					}
+					
+				}
+				
+			}
+		
+		}else if(col == 8){
+			if(columns[col].size() == 1){
+				Cell fix = (Cell) columns[col].get(0);
+				cellWay.add(fix);
+				counter++;
+//				System.out.println("ENDE DES WEGES");
+				
+			}else if(columns[col].size() > 1){
+				Cell a = cellWay.get(cellWay.size()-2);
+				Cell b = cellWay.get(cellWay.size()-1);
+				Cell c = null;
+				int cellRow = 0;
+				
+				for(int i = 0; i < columns[col].size(); i++){
+					c = (Cell) columns[col].get(i);
+					if(compare(a, b, c) == true){
+						cellWay.add(c);
+						counter++;
+						break;
+					}
+					
+				}
+				
+//				System.out.println("ENDE DES WEGES");
 			}
 		}
 		
-		return possibleTemp;
+		
+		
+//		Cell a = (Cell) columns[col].get(row);
+//		System.out.println(a.getrIndex() + ", " + a.getcIndex());
+	}
+	
+	public boolean compare (Cell b, Cell c){
+		int bCol = b.getcIndex() - ((b.getcIndex()-1)%3);
+		int bRow = b.getrIndex() - ((b.getrIndex()-1)%3);
+		
+		int cCol = c.getcIndex() - ((c.getcIndex()-1)%3);
+		int cRow = c.getrIndex() - ((c.getrIndex()-1)%3);
+		
+		if(cCol == bCol && cRow == bRow){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean compare(Cell a, Cell b, Cell c){
+		int aCol = a.getcIndex() - ((a.getcIndex()-1)%3);
+		int aRow = a.getrIndex() - ((a.getrIndex()-1)%3);
+		
+		int bCol = b.getcIndex() - ((b.getcIndex()-1)%3);
+		int bRow = b.getrIndex() - ((b.getrIndex()-1)%3);
+		
+		int cCol = c.getcIndex() - ((c.getcIndex()-1)%3);
+		int cRow = c.getrIndex() - ((c.getrIndex()-1)%3);
+		
+		if(cCol == aCol && cRow == aRow){
+			return false;
+		}
+		if(cCol == bCol && cRow == bRow){
+			return false;
+		}
+		return true;
+	}
+	
+	public void emptyWay(){
+		while(cellWay.isEmpty() == false){
+			cellWay.removeFirst();
+		}
+	}
+	
+	public LinkedList[] sortFixedAndPossible(Grid grid, int number){
+		LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
+		LinkedList<Cell> fixedCells = getFixedCells(grid, number);
+		
+		LinkedList[] Columns = new LinkedList[9];
+		for(int i = 0; i < Columns.length; i++){
+			LinkedList<Cell> cellPerColumn = new LinkedList<Cell>();
+			Columns[i] = cellPerColumn;
+		}
+		
+		for(int i = 0; i < possibleCells.size(); i++){
+			Columns[possibleCells.get(i).getcIndex()-1].add(possibleCells.get(i));
+		}
+		
+		for(int i = 0; i < fixedCells.size(); i++){
+			Columns[fixedCells.get(i).getcIndex()-1].add(fixedCells.get(i));
+		}
+		
+		return Columns;
+	}
+
+	
+	public LinkedList<Cell> getFixedCells(Grid grid, int number){
+		LinkedList<Cell> fixedCells = new LinkedList<Cell>();
+		
+		for(int i = 1; i < 10; i++){
+			for(int j = 1; j < 10; j++){
+				
+				if(grid.getValue(i, j) == number){
+					fixedCells.add(grid.getCell(i, j));
+				}
+			}
+		}
+		return fixedCells;
 	}
 	
 	public LinkedList<Cell> getPossibleCells(Grid grid, int number){
@@ -677,6 +718,138 @@ public class PuzzleRow implements RowSortable{
 		}else{
 			return true;
 		}
+	}
+	
+	
+	public void setNumber(Grid grid, LinkedList<Cell> possibleCells, int number){
+		
+//		Grid temp = new Grid(9);
+//		for(int i = 1; i < 10; i++){
+//			temp.setRowValues(i, grid.getRowValues(i));
+//		}
+//		
+//		LinkedList<Cell> tempPC = (LinkedList<Cell>) possibleCells.clone();
+//		System.out.println(tempPC.size());
+//		auslesen(tempPC);
+//		
+//		while(tempPC.isEmpty() == false){
+//			Cell filled = tempPC.removeFirst();
+//			System.out.println("filled: " + filled.getrIndex() + ", " + filled.getcIndex());
+//			
+//			System.out.println("remove, now " + tempPC.size()); auslesen(tempPC);
+//			
+//			temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+//			LinkedList<Cell> newTempPC = getPossible(filled, tempPC);
+//			
+//			setNumber(temp, newTempPC, number);
+//		}
+	
+//------------------------------------------------------------------------------------------------				
+		
+//		LinkedList<Cell> possibleTemp = (LinkedList<Cell>) possibleCells.clone();
+//		
+//		Grid temp = new Grid(9);
+//		for(int i = 0; i < temp.getColValues(1).length; i++){
+//			temp.setRowValues(i+1, grid.getRowValues(i+1));
+//		}
+//		
+////		System.out.println(possibleTemp.isEmpty());
+//		if(possibleTemp.isEmpty() == false){
+//				
+//			for(int i = 0; i < possibleTemp.size(); i++){
+////				System.out.println("HIER MIT " + i);
+//				System.out.println(possibleTemp.size());
+//				auslesen(possibleTemp);
+//							
+//				Cell filled = possibleTemp.get(i); filled.setValue(number);
+////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
+//								
+//				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+//				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
+//		
+////				System.out.print("DANACH ");auslesen(possibleTemp);
+//				setNumber(temp, newPossibleTemp, number);
+//			} 				
+//				
+////			while(possibleTemp.isEmpty() == false){
+////
+////				System.out.println(possibleTemp.size());
+////				auslesen(possibleTemp);
+////				
+////				Cell filled = possibleTemp.removeFirst(); filled.setValue(number);
+//////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
+////				
+////				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
+////				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
+////
+////				setNumber(temp, newPossibleTemp, number);
+////			} 
+//			
+//		}else{				
+////			for(int i = 0; i < temp.getColValues(1).length; i++){
+////				temp.setRowValues(i+1, grid.getRowValues(i+1));
+////			}
+//				
+//			allGrids.add(temp);
+////			temp.print();
+////			System.out.println("");
+//		}
+	}
+	
+	public LinkedList<Cell>	getPossible(Cell filled, LinkedList<Cell> possibleTemp){
+		
+		//COLUMN CHECK
+		int found = 1;
+		stopwhile:while(found > 0){
+			found = 0;
+			
+			for(int i = 0; i < possibleTemp.size(); i++){
+				if(possibleTemp.get(i).getcIndex() == filled.getcIndex()){
+					possibleTemp.remove(i);
+					found++;
+				}
+			}
+			
+			if(found == 0){
+				break stopwhile;
+			}
+		}
+		
+		//BLOCK CHECK
+		int filledBlockCol = (filled.getcIndex() - ((filled.getcIndex()-1)%3));
+		int filledBlockRow = (filled.getrIndex() - ((filled.getrIndex()-1)%3));
+		found = 1;
+		
+		stopwhile2:while(found > 0){
+			found = 0;
+			
+			for(int i = 0; i < possibleTemp.size(); i++){
+				int delBlockCol = (possibleTemp.get(i).getcIndex() - ((possibleTemp.get(i).getcIndex()-1)%3));
+				int delBlockRow = (possibleTemp.get(i).getrIndex() - ((possibleTemp.get(i).getrIndex()-1)%3));
+				
+				if(filledBlockCol == delBlockCol && filledBlockRow == delBlockRow){
+					possibleTemp.remove(i);
+					found++;
+				}
+			}
+			
+			if(found == 0){
+				break stopwhile2;
+			}
+		}
+		
+		return possibleTemp;
+	}
+	
+	
+	public void auslesen(LinkedList[] a){
+		for(int i = 0; i < a.length; i++){
+			for(int j = 0; j < a[i].size(); j++){
+				System.out.println(a[i].get(j) +  ", ");
+			}
+			System.out.println("");
+		}
+			
 	}
 	
 	public void auslesen(int[] a){
