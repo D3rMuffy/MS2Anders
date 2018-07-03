@@ -179,6 +179,12 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 
+	/**
+	 * Zaehlt die moeglichen verschiedenen number-Anordnungen, und gibt die Anzahl wieder.
+	 * @param grid Sudoku, welches teilbefuellt ist.
+	 * @param number Zahl, dessen Erweiterungen gezaehlt werden sollen.
+	 * @return int Die Anzahl der number-Anordnungen.
+	 */
 	public int putNumberColBlock(Grid grid, int number) {
 		if(isPartyFilled(grid) == false){
 			return 0;
@@ -197,6 +203,14 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
+	/**
+	 * Submethode zu der Methode putNumberColBlock.
+	 * Durchlaeuft das LinkedList Array mit den sortierten Zellen bezueglich der Number Belegungs Möglichkeiten und
+	 * ruft mit den maeöglichen Zellen die rekursive Suche nach den folgenden Zellbelegungsmöglichkeiten auf.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @param columns Das LinkedList Array auf dem die Zellen, die entweder mit number belegt sind oder fuer number möglich waeren gespeichert sind.
+	 */
 	public void startRecursion(Grid grid, int number, LinkedList[] columns){
 		for(int i = 0; i < columns.length; i++){
 			if(columns[i].size() > 1){
@@ -209,24 +223,33 @@ public class PuzzleRow implements RowSortable{
 //					System.out.println("Counter: " + counter);
 				}
 				break;
+			}else{
+				Cell a = (Cell) columns[i].get(0);
+				cellWay.add(a);
 			}
+			
 		}
 	}
 	
 	LinkedList<Cell> cellWay = new LinkedList<Cell>();
 	int counter = 0;
 	
+	/**
+	 * Submethode zu der Methode startRecursion.
+	 * Waehlt die Zelle aus, die in der aktuellen Mmöglichen Belegung gewaehlt werden soll und speichert diese in der globalen LinkedList cellWay.
+	 * Ueberprueft bei der Auswahl der naechsten Zelle natuerlich auch jedesmal, ob die Voraussetzungen noch erfuellt sind.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @param col Der Index des LinkedList Array column, auf dem wir uns gerade befinden.
+	 * @param row Der Index der LinkedList mit den möglichen Zellen fuer number in dem column Array, auf dem wir uns befinden, oder dass wir ueberpruefen wollen.
+	 * @param columns Das LinkedList Array auf dem die Zellen, die entweder mit number belegt sind oder fuer number möglich waeren gespeichert sind.
+	 */
 	public void recursion(Grid grid, int number, int col, int row, LinkedList[] columns){
 //		auslesen(cellWay);
 //		System.out.println("-");
 		
 		if(col == 0){
-			if(columns[col+1].size() == 1){
-				Cell fix = (Cell) columns[col+1].get(0);
-				cellWay.add(fix);
-				recursion(grid, number, col+1, (fix.getrIndex()-1), columns);
-				
-			}else if(columns[col+1].size() > 1){
+			if(columns[col+1].size() > 1){
 				for(int i = 0; i < columns[col+1].size(); i++){
 					Cell c = (Cell) columns[col+1].get(i);
 					cellWay.add(c);
@@ -312,6 +335,14 @@ public class PuzzleRow implements RowSortable{
 //		System.out.println(a.getrIndex() + ", " + a.getcIndex());
 	}
 	
+	/**
+	 * Submethode zu der Methode recursion.
+	 * Bekommt die aktuelle und letzt-gewaehlte Zelle und prueft, dass diese nicht im selben Block liegen, da sonst eine Verletzung
+	 * der Voraussetzung eintreten wuerde.
+	 * @param b Letzt-gewaehlte Zelle .
+	 * @param c Zelle die aktuell geprueft wird.
+	 * @return true, falls kein Verstoss vorliegt. False, falls doch.
+	 */
 	public boolean compare (Cell b, Cell c){
 		int bCol = b.getcIndex() - ((b.getcIndex()-1)%3);
 		int bRow = b.getrIndex() - ((b.getrIndex()-1)%3);
@@ -325,6 +356,15 @@ public class PuzzleRow implements RowSortable{
 		return true;
 	}
 	
+	/**
+	 * Submethode zu der Methode recursion.
+	 * Bekommt die aktuelle, letzt-gewaehlte und vborletzt-gewaehlte Zelle und prueft, dass diese nicht im selben Block liegen, da sonst eine Verletzung
+	 * der Voraussetzung eintreten wuerde.
+	 * @param a vorletzt-gewaehlte Zelle.
+	 * @param b Letzt-gewaehlte Zelle.
+	 * @param c Zelle die aktuell geprueft wird.
+	 * @return true, falls kein Verstoss vorliegt. False, falls doch.
+	 */
 	public boolean compare(Cell a, Cell b, Cell c){
 		int aCol = a.getcIndex() - ((a.getcIndex()-1)%3);
 		int aRow = a.getrIndex() - ((a.getrIndex()-1)%3);
@@ -344,12 +384,26 @@ public class PuzzleRow implements RowSortable{
 		return true;
 	}
 	
+	/**
+	 * Submethode zu der Methode startRecursion.
+	 *Entleert die globale LinkedList cellWay, auf der die Zellen gespeichert sind, die wir bei der aktuellen Ermittlung einer
+	 *validen Belegung abgelaufen sind.
+	 */
 	public void emptyWay(){
 		while(cellWay.isEmpty() == false){
 			cellWay.removeFirst();
 		}
 	}
 	
+	/**
+	 * Submethode zu der Methode putNumberColBlock.
+	 * Ordnet und sortiert die fuer die Number möglichen Zellen und die Zellen in denen Number schon drinnen steht,
+	 * in einem LinkedList Array.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @return Columns Ein LinkedList Array, auf dem die Zellen die fuer Number möglich sind, oder Number enthalten ist, gespeichert sind.
+	 * Hier steht der Index des Arrays fuer die jeweilige Column im Grid.
+	 */
 	public LinkedList[] sortFixedAndPossible(Grid grid, int number){
 		LinkedList<Cell> possibleCells = getPossibleCells(grid, number);
 		LinkedList<Cell> fixedCells = getFixedCells(grid, number);
@@ -371,7 +425,13 @@ public class PuzzleRow implements RowSortable{
 		return Columns;
 	}
 
-	
+	/**
+	 * Submethode zu der Methode sortFixedAndPossible.
+	 * Ordnet und sortiert die Zellen in denen Number schon drinnen steht in einer LinkedList.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @return fixedCells Eine LinkedList, auf dem die Zellen wo Number enthalten ist, gespeichert sind.
+	 */
 	public LinkedList<Cell> getFixedCells(Grid grid, int number){
 		LinkedList<Cell> fixedCells = new LinkedList<Cell>();
 		
@@ -385,7 +445,14 @@ public class PuzzleRow implements RowSortable{
 		}
 		return fixedCells;
 	}
-	
+
+	/**
+	 * Submethode zu der Methode sortFixedAndPossible.
+	 * Ordnet und sortiert die Zellen in denen Number stehen könnte in einer LinkedList.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @return possibleCells Eine LinkedList, auf dem die Zellen in denen Number stehen könnte, gespeichert sind.
+	 */
 	public LinkedList<Cell> getPossibleCells(Grid grid, int number){
 		LinkedList<Cell> possibleCells = new LinkedList<Cell>();
 		LinkedList<Cell> blocks = blocksWithoutNumber(grid, number);
@@ -408,6 +475,13 @@ public class PuzzleRow implements RowSortable{
 		return possibleCells;
 	}
 	
+	/**
+	 * Submethode zu der Methode getPossibleCells.
+	 * Liefert die Ankerzellen der Blöcke zurueck, in denen number nicht enthalten ist.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @return temp LinkedList der Blöcke in denen number nicht enthalten ist.
+	 */
 	public LinkedList<Cell> blocksWithoutNumber(Grid grid, int number){
 		LinkedList<Cell> allBlocks = new LinkedList<Cell>();
 		allBlocks.add(grid.getCell(1, 1));
@@ -445,6 +519,14 @@ public class PuzzleRow implements RowSortable{
 		return temp;
 	}
 
+	/**
+	 * Submethode zu der Methode getPossibleCells.
+	 * Entscheidet, ob die uebergebene Zelle eine mögliche fuer die Belegung mit number ist.
+	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
+	 * @param a Die Zelle die aktuell geprueft wird.
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @return boolean true, falls es eine mögliche Zelle ist. False, falls nicht.
+	 */
 	public boolean possibleForNumber(Grid grid, Cell a, int number){
 		int nope = 0;
 		
@@ -461,6 +543,13 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
+	/**
+	 * Submethode zu der Methode putNumberColBlock..
+	 * Ueberprueft, ob die Voraussetzungen der Methode auf dieses Grid zustimmen.
+	 * @param grid Das Sudoku auf dem geprueft wird
+	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
+	 * @return boolean true falls die Voraussetzungen erfuellt sind. False, falls nicht.
+	 */
 	public boolean rulesConfirmed(Grid grid, int number){
 		LinkedList<Cell> blocksWithoutNumber = blocksWithoutNumber(grid, number);
 		int nope = 0;
@@ -701,6 +790,12 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 
+	/**
+	 * Submethode zu der Methode putNumberColBlock..
+	 * Ueberprueft, ob das uebergebene Grid teilbefuellt ist, oder nicht.
+	 * @param grid Das Sudoku auf dem geprueft wird
+	 * @return boolean true falls teilbefuellt. False, falls nicht.
+	 */
 	public boolean isPartyFilled(Grid grid){
 		int minCounter = 0;
 		
@@ -720,126 +815,6 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
-	
-	public void setNumber(Grid grid, LinkedList<Cell> possibleCells, int number){
-		
-//		Grid temp = new Grid(9);
-//		for(int i = 1; i < 10; i++){
-//			temp.setRowValues(i, grid.getRowValues(i));
-//		}
-//		
-//		LinkedList<Cell> tempPC = (LinkedList<Cell>) possibleCells.clone();
-//		System.out.println(tempPC.size());
-//		auslesen(tempPC);
-//		
-//		while(tempPC.isEmpty() == false){
-//			Cell filled = tempPC.removeFirst();
-//			System.out.println("filled: " + filled.getrIndex() + ", " + filled.getcIndex());
-//			
-//			System.out.println("remove, now " + tempPC.size()); auslesen(tempPC);
-//			
-//			temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-//			LinkedList<Cell> newTempPC = getPossible(filled, tempPC);
-//			
-//			setNumber(temp, newTempPC, number);
-//		}
-	
-//------------------------------------------------------------------------------------------------				
-		
-//		LinkedList<Cell> possibleTemp = (LinkedList<Cell>) possibleCells.clone();
-//		
-//		Grid temp = new Grid(9);
-//		for(int i = 0; i < temp.getColValues(1).length; i++){
-//			temp.setRowValues(i+1, grid.getRowValues(i+1));
-//		}
-//		
-////		System.out.println(possibleTemp.isEmpty());
-//		if(possibleTemp.isEmpty() == false){
-//				
-//			for(int i = 0; i < possibleTemp.size(); i++){
-////				System.out.println("HIER MIT " + i);
-//				System.out.println(possibleTemp.size());
-//				auslesen(possibleTemp);
-//							
-//				Cell filled = possibleTemp.get(i); filled.setValue(number);
-////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
-//								
-//				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-//				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
-//		
-////				System.out.print("DANACH ");auslesen(possibleTemp);
-//				setNumber(temp, newPossibleTemp, number);
-//			} 				
-//				
-////			while(possibleTemp.isEmpty() == false){
-////
-////				System.out.println(possibleTemp.size());
-////				auslesen(possibleTemp);
-////				
-////				Cell filled = possibleTemp.removeFirst(); filled.setValue(number);
-//////				System.out.println("FILLED: " + filled.getrIndex() + ", " + filled.getcIndex());
-////				
-////				temp.setValue(filled.getrIndex(), filled.getcIndex(), number);
-////				LinkedList<Cell> newPossibleTemp = getPossible(filled, possibleTemp);
-////
-////				setNumber(temp, newPossibleTemp, number);
-////			} 
-//			
-//		}else{				
-////			for(int i = 0; i < temp.getColValues(1).length; i++){
-////				temp.setRowValues(i+1, grid.getRowValues(i+1));
-////			}
-//				
-//			allGrids.add(temp);
-////			temp.print();
-////			System.out.println("");
-//		}
-	}
-	
-	public LinkedList<Cell>	getPossible(Cell filled, LinkedList<Cell> possibleTemp){
-		
-		//COLUMN CHECK
-		int found = 1;
-		stopwhile:while(found > 0){
-			found = 0;
-			
-			for(int i = 0; i < possibleTemp.size(); i++){
-				if(possibleTemp.get(i).getcIndex() == filled.getcIndex()){
-					possibleTemp.remove(i);
-					found++;
-				}
-			}
-			
-			if(found == 0){
-				break stopwhile;
-			}
-		}
-		
-		//BLOCK CHECK
-		int filledBlockCol = (filled.getcIndex() - ((filled.getcIndex()-1)%3));
-		int filledBlockRow = (filled.getrIndex() - ((filled.getrIndex()-1)%3));
-		found = 1;
-		
-		stopwhile2:while(found > 0){
-			found = 0;
-			
-			for(int i = 0; i < possibleTemp.size(); i++){
-				int delBlockCol = (possibleTemp.get(i).getcIndex() - ((possibleTemp.get(i).getcIndex()-1)%3));
-				int delBlockRow = (possibleTemp.get(i).getrIndex() - ((possibleTemp.get(i).getrIndex()-1)%3));
-				
-				if(filledBlockCol == delBlockCol && filledBlockRow == delBlockRow){
-					possibleTemp.remove(i);
-					found++;
-				}
-			}
-			
-			if(found == 0){
-				break stopwhile2;
-			}
-		}
-		
-		return possibleTemp;
-	}
 	
 	
 	public void auslesen(LinkedList[] a){
