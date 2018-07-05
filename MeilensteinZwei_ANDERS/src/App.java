@@ -16,15 +16,15 @@ public class App {
 		GridUtils3 cba = new GridUtils3();
 		PuzzleRow cab = new PuzzleRow();
 		
-		//putNumberColBlock INPUT
-		int[] row1 = {+5,-1,-1,-1,-1,-1,-1,-1,-1};
-		int[] row2=  {-1,+2,-1,-1,-1,-1,-1,+5,-1};
-		int[] row3 = {-1,-1,+7,+7,+7,-1,-1,-1,-1};
-		int[] row4 = {-1,-1,-1,-1,+5,-1,-1,-1,-1};
-		int[] row5 = {-1,-1,-1,-1,+3,-1,-1,-1,+5};
-		int[] row6 = {-1,+5,-1,-1,-1,-1,-1,-1,-1};
-		int[] row7 = {-1,-1,+5,-1,-1,-1,-1,-1,-1};
-		int[] row8 = {-1,-1,+4,-1,-1,-1,-1,-1,-1};
+		//DEFAULT
+		int[] row1 = {-1,+2,-1,-1,-1,-1,-1,-1,-1};
+		int[] row2=  {-1,-1,-1,+2,-1,-1,-1,-1,-1};
+		int[] row3 = {-1,-1,-1,-1,-1,-1,+2,-1,-1};
+		int[] row4 = {-1,-1,+2,-1,-1,-1,-1,-1,-1};
+		int[] row5 = {-1,-1,-1,-1,+2,-1,-1,-1,-1};
+		int[] row6 = {-1,-1,-1,-1,-1,-1,-1,+2,-1};
+		int[] row7 = {-1,-1,-1,-1,-1,-1,-1,-1,+2};
+		int[] row8 = {-1,-1,-1,-1,-1,+2,-1,-1,-1};
 		int[] row9 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 				
 		//TWO TURN
@@ -81,7 +81,7 @@ public class App {
 //		
 //		System.out.println("\nHasRowSudoku: " + cab.hasRowSudoku(a));
 		
-		System.out.println("\nputNumberColBlock: " + cab.putNumberColBlock(a, 5));
+		System.out.println("\nputNumberColBlock: " + cab.putNumberColBlock(a, 2));
 	}
 
 	public static void callSolveRowBased(Grid a, Grid b, RowUtils abc){
@@ -223,6 +223,17 @@ public class App {
 //	int[] row8 = {-1,-1,+4,-1,-1,-1,-1,-1,-1};
 //	int[] row9 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 //	
+//	//PUTNUMBERCOLBLOCK 2ND INPUT
+//	int[] row1 = {-1,-1,-1,-1,-1,-1,-1,-1,+6};
+//	int[] row2=  {-1,-1,-1,+6,-1,-1,-1,+2,-1};
+//	int[] row3 = {-1,+4,+6,-1,-1,-1,+7,-1,-1};
+//	int[] row4 = {-1,-1,-1,-1,-1,-1,+5,-1,-1};
+//	int[] row5 = {-1,-1,-1,-1,+3,+6,+2,-1,-1};
+//	int[] row6 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
+//	int[] row7 = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
+//	int[] row8 = {-1,-1,-1,-1,-1,-1,-1,+6,-1};
+//	int[] row9 = {-1,-1,-1,-1,+6,-1,-1,-1,-1};
+//			
 //	//putNumberColBlock TESTWEISE INPUT
 //	int[] row1 = {-1,-1,+2,-1,-1,-1,-1,-1,-1};
 //	int[] row2=  {+1,-1,-1,-1,-1,-1,-1,+2,-1};

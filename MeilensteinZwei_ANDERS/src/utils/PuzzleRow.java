@@ -190,13 +190,29 @@ public class PuzzleRow implements RowSortable{
 			return 0;
 		}else{
 			if(rulesConfirmed(grid, number) == true){
-				LinkedList[] columns = sortFixedAndPossible(grid, number);
-//				auslesen(columns);
-				
-				startRecursion(grid, number, columns);
+				if(isEmptyGrid(grid) == true){
+					return 4251528;
+				}else{
+					LinkedList[] columns = sortFixedAndPossible(grid, number);
+//					auslesen(columns);
+					
+					startRecursion(grid, number, columns);
 
-//				setNumber(grid, possibleCells, number);
-				return counter;
+//					setNumber(grid, possibleCells, number);
+					
+//					for(int i = 0; i < allCellWays.size(); i++){
+//						System.out.println("SIZE: " + allCellWays.get(i).size());
+//						for(int j = 0; j < allCellWays.get(i).size(); j++){
+//							
+//							Cell a = (Cell) allCellWays.get(i).get(j);
+//							System.out.println(a.getrIndex() + ", " + a.getcIndex());
+//						}
+//						System.out.println("");
+//					}
+					
+					
+					return counter;
+				}
 			}else{
 				return 0;
 			}
@@ -233,6 +249,7 @@ public class PuzzleRow implements RowSortable{
 	
 	LinkedList<Cell> cellWay = new LinkedList<Cell>();
 	int counter = 0;
+	LinkedList<LinkedList> allCellWays = new LinkedList<LinkedList>();
 	
 	/**
 	 * Submethode zu der Methode startRecursion.
@@ -247,16 +264,35 @@ public class PuzzleRow implements RowSortable{
 	public void recursion(Grid grid, int number, int col, int row, LinkedList[] columns){
 //		auslesen(cellWay);
 //		System.out.println("-");
-		
+
 		if(col == 0){
 			if(columns[col+1].size() > 1){
+				
+//				for(int i = 0; i < columns[col+1].size(); i++){
+//					System.out.print(columns[col+1].get(i)+ ", ");
+//				}
+//				
+//				System.out.println(columns[col+1].size() + " mit col+1 = " + (col+1));
+				
 				for(int i = 0; i < columns[col+1].size(); i++){
-					Cell c = (Cell) columns[col+1].get(i);
-					cellWay.add(c);
-					recursion(grid, number, col+1, i, columns);
+					if(doesntViolate((Cell) columns[col+1].get(i), (Cell) columns[col].get(row))	== true){
+						Cell c = (Cell) columns[col+1].get(i);
+						cellWay.add(c);
+						recursion(grid, number, col+1, i, columns);
+					}
 				}
-			}			
+			}else if(columns[col+1].size() == 1){
+				Cell fix = (Cell) columns[col+1].get(0);
+				cellWay.add(fix);
+				recursion(grid, number, col+1, (fix.getrIndex()-1), columns);
+			}
 		}else if(col == 1){
+			
+//			for(int i = 0; i < columns[col+1].size(); i++){
+//				System.out.print(columns[col+1].get(i)+ ", ");
+//			}
+//			
+//			System.out.println(columns[col+1].size() + " mit col+1 = " + (col+1));
 			if(columns[col+1].size() == 1){
 				Cell fix = (Cell) columns[col+1].get(0);
 				cellWay.add(fix);
@@ -268,6 +304,8 @@ public class PuzzleRow implements RowSortable{
 				
 				for(int i = 0; i < columns[col+1].size(); i++){
 					c = (Cell) columns[col+1].get(i);
+//					System.out.println("Vorherige Zelle: " + b.getrIndex() + ", " + b.getcIndex());
+//					System.out.println(compare(b,c) + " mit " + c.getrIndex() + ", " + c.getcIndex());
 					if(compare(b, c) == true){
 						cellWay.add(c);
 						recursion(grid, number, col+1, i, columns);
@@ -308,6 +346,8 @@ public class PuzzleRow implements RowSortable{
 				cellWay.add(fix);
 				counter++;
 //				System.out.println("ENDE DES WEGES");
+				LinkedList<Cell> a = (LinkedList<Cell>) cellWay.clone();
+				allCellWays.add(a);
 				
 			}else if(columns[col].size() > 1){
 				Cell a = cellWay.get(cellWay.size()-2);
@@ -324,15 +364,38 @@ public class PuzzleRow implements RowSortable{
 					}
 					
 				}
-				
+				LinkedList<Cell> d = (LinkedList<Cell>) cellWay.clone();
+				allCellWays.add(d);
 //				System.out.println("ENDE DES WEGES");
 			}
 		}
 		
-		
-		
 //		Cell a = (Cell) columns[col].get(row);
 //		System.out.println(a.getrIndex() + ", " + a.getcIndex());
+	}
+	
+	/**
+	 * Submethode zu der Methode putNumberColBlock..
+	 * Ueberprueft, ob die Voraussetzungen der Methode auf die zwei übergebenen Zellen zustimmen.
+	 * @param a "Vorherige" Zelle
+	 * @param b Aktuell gesuchte Zelle
+	 * @return boolean true falls die Voraussetzungen erfuellt sind. False, falls nicht.
+	 */
+
+	public boolean doesntViolate(Cell a, Cell b){
+		int blockRowA = a.getrIndex() - ((a.getrIndex()-1)%3);
+		int blockColA = a.getcIndex() - ((a.getcIndex()-1)%3);
+		
+		int blockRowB = b.getrIndex() - ((b.getrIndex()-1)%3);
+		int blockColB = b.getcIndex() - ((b.getcIndex()-1)%3);
+		
+		if(blockRowA == blockRowB && blockColA == blockColB){
+			return false;
+		}else if(a.getcIndex() == b.getcIndex()){
+			return false;
+		}else{
+			return true;
+		}
 	}
 	
 	/**
@@ -580,6 +643,22 @@ public class PuzzleRow implements RowSortable{
 			}
 		}
 		
+		label2:for(int i = 1; i < 10; i++){
+			int[] numbers = {0,0,0,0,0,0,0,0,0};
+			
+			for(int j = 0; j < grid.getColValues(i).length; j++){
+				if(grid.getColValues(i)[j] != -1){
+					numbers[(grid.getColValues(i)[j])-1]++;
+				}
+			}
+			
+			for(int j = 0; j < numbers.length; j++){
+				if(numbers[j] > 1){
+					answer = false;
+					break label2;
+				}
+			}
+		}
 		return answer;
 	}
 	
@@ -601,7 +680,31 @@ public class PuzzleRow implements RowSortable{
 			}
 			row++;
 		}
+		if(nullCounter == 81){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * Hilfsmethode zu putNumberColBlock.
+	 * Ueberprueft auf dem grid, ob es nur aus -1 besteht - also leer ist.
+	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
+	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurueckgegeben. Sonst false.
+	 */
+	public boolean isEmptyGrid(Grid temp) {
+		int nullCounter = 0;
 		
+		int row = 1;
+		while(row < 10){
+			for(int rIndex = 0; rIndex < temp.getRowValues(row).length; rIndex++){
+				if(temp.getRowValues(row)[rIndex] == -1){
+					nullCounter++;
+				}
+			}
+			row++;
+		}
 		if(nullCounter == 81){
 			return true;
 		}else{
@@ -820,7 +923,7 @@ public class PuzzleRow implements RowSortable{
 	public void auslesen(LinkedList[] a){
 		for(int i = 0; i < a.length; i++){
 			for(int j = 0; j < a[i].size(); j++){
-				System.out.println(a[i].get(j) +  ", ");
+				System.out.print(a[i].get(j) +  ", ");
 			}
 			System.out.println("");
 		}
@@ -844,5 +947,4 @@ public class PuzzleRow implements RowSortable{
 		}
 	}
 	
-
 }
