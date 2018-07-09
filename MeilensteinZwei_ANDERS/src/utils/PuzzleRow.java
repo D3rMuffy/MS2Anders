@@ -8,6 +8,10 @@ import java.util.Stack;
 import data.Cell;
 import data.Grid;
 
+
+/**
+ * @author Teichmeister, Christoph
+ */
 public class PuzzleRow implements RowSortable{
 	
 	@SuppressWarnings("rawtypes")
@@ -43,6 +47,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Submethode zu permute().
 	 * Erstellt alle Permutationen aus der Reihe 1-9 und speichert diese in die globale LinkedListe allPerm
+	 * 
 	 * @param moeglicheNummer die Reihe aus der eine Permutation erstellt werden soll.
 	 * @param permutation eine der vielen Permutationen der Reihe.
 	 * @param size Groesse, des moeglicheNummer Stacks; dient als "speicher-Bedingung".
@@ -72,6 +77,7 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Ueberprueft, ob es mindestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
+	 * 
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return grid Eine v-konfliktfreie Anordnung. Falls keine solche existiert, ein Nullergrid.
 	 */
@@ -96,6 +102,7 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Ueberprueft, ob es mindestens eine v-konfliktfreie Anordnung der gegebenen Zeilen gibt.
+	 * 
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return boolean true, falls es eine v-konfliktfreie Anordnung gibt, false falls nicht.
 	 */
@@ -112,6 +119,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Ueberprueft, ob es mindestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
 	 * die Zahlen von 1-9 genau einmal vorkommen..
+	 * 
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return grid Es wird das input grid zurueckgegeben, falls die Bedingungen von vorne herein erfuellt sind.
 	 * Es wird temp zurueckgegeben, falls durch Tauschoperationen, eine Bedingung Erfuellende Konstellation gefunden wurde.
@@ -138,6 +146,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Ueberprueft, ob es mindestens eine Anordnung gibt, bei der in jeder Spalte und jedem Block
 	 * die Zahlen von 1-9 genau einmal vorkommen..
+	 * 
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return boolean true, falls es eine solche Anordnung gibt. false, falls nicht.
 	 */
@@ -153,6 +162,7 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Ueberprueft, ob es mindestens eine Anordnung gibt, ein zulaessig gefuelltes Sudoku zu erhalten.
+	 * 
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return grid falls das Input Sudoku bereits zulaessig gefuellt ist.
 	 * temp falls durch eine neue Anordnung der Rows ein zulaessig gefuelltes Sudoku entstand.
@@ -179,6 +189,7 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Ueberprueft, ob es mindestens eine Anordnung gibt, ein zulaessig gefuelltes Sudoku zu erhalten.
+	 * 
 	 * @param grid Sudoku, bei dem jede der neun Zeilen komplett mit 1-9 belegt sind.
 	 * @return boolean true, falls es eine solche Anordnung gibt. false, falls nicht.
 	 */
@@ -194,6 +205,7 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Zaehlt die moeglichen verschiedenen number-Anordnungen, und gibt die Anzahl wieder.
+	 * 
 	 * @param grid Sudoku, welches teilbefuellt ist.
 	 * @param number Zahl, dessen Erweiterungen gezaehlt werden sollen.
 	 * @return int Die Anzahl der number-Anordnungen.
@@ -219,11 +231,12 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Submethode zu der Methode putNumberColBlock.
-	 * Durchlaeuft das LinkedList Array mit den sortierten Zellen bezueglich der Number Belegungs Möglichkeiten und
-	 * ruft mit den maeöglichen Zellen die rekursive Suche nach den folgenden Zellbelegungsmöglichkeiten auf.
+	 * Durchlaeuft das LinkedList Array mit den sortierten Zellen bezueglich der Number Belegungs Moeglichkeiten und
+	 * ruft mit den maeoeglichen Zellen die rekursive Suche nach den folgenden Zellbelegungsmoeglichkeiten auf.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
-	 * @param columns Das LinkedList Array auf dem die Zellen, die entweder mit number belegt sind oder fuer number möglich waeren gespeichert sind.
+	 * @param columns Das LinkedList Array auf dem die Zellen, die entweder mit number belegt sind oder fuer number moeglich waeren gespeichert sind.
 	 */
 	public void startRecursion(Grid grid, int number, LinkedList[] columns){
 		for(int i = 0; i < columns.length; i++){
@@ -249,13 +262,14 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Submethode zu der Methode startRecursion.
-	 * Waehlt die Zelle aus, die in der aktuellen Mmöglichen Belegung gewaehlt werden soll und speichert diese in der globalen LinkedList cellWay.
+	 * Waehlt die Zelle aus, die in der aktuellen Mmoeglichen Belegung gewaehlt werden soll und speichert diese in der globalen LinkedList cellWay.
 	 * Ueberprueft bei der Auswahl der naechsten Zelle natuerlich auch jedesmal, ob die Voraussetzungen noch erfuellt sind.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
 	 * @param col Der Index des LinkedList Array column, auf dem wir uns gerade befinden.
-	 * @param row Der Index der LinkedList mit den möglichen Zellen fuer number in dem column Array, auf dem wir uns befinden, oder dass wir ueberpruefen wollen.
-	 * @param columns Das LinkedList Array auf dem die Zellen, die entweder mit number belegt sind oder fuer number möglich waeren gespeichert sind.
+	 * @param row Der Index der LinkedList mit den moeglichen Zellen fuer number in dem column Array, auf dem wir uns befinden, oder dass wir ueberpruefen wollen.
+	 * @param columns Das LinkedList Array auf dem die Zellen, die entweder mit number belegt sind oder fuer number moeglich waeren gespeichert sind.
 	 */
 	public void recursion(Grid grid, int number, int col, int row, LinkedList[] columns){
 
@@ -348,7 +362,8 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Submethode zu der Methode putNumberColBlock..
-	 * Ueberprueft, ob die Voraussetzungen der Methode auf die zwei übergebenen Zellen zustimmen.
+	 * Ueberprueft, ob die Voraussetzungen der Methode auf die zwei uebergebenen Zellen zustimmen.
+	 * 
 	 * @param a "Vorherige" Zelle
 	 * @param b Aktuell gesuchte Zelle
 	 * @return boolean true falls die Voraussetzungen erfuellt sind. False, falls nicht.
@@ -373,6 +388,7 @@ public class PuzzleRow implements RowSortable{
 	 * Submethode zu der Methode recursion.
 	 * Bekommt die aktuelle und letzt-gewaehlte Zelle und prueft, dass diese nicht im selben Block liegen, da sonst eine Verletzung
 	 * der Voraussetzung eintreten wuerde.
+	 * 
 	 * @param b Letzt-gewaehlte Zelle .
 	 * @param c Zelle die aktuell geprueft wird.
 	 * @return true, falls kein Verstoss vorliegt. False, falls doch.
@@ -394,6 +410,7 @@ public class PuzzleRow implements RowSortable{
 	 * Submethode zu der Methode recursion.
 	 * Bekommt die aktuelle, letzt-gewaehlte und vborletzt-gewaehlte Zelle und prueft, dass diese nicht im selben Block liegen, da sonst eine Verletzung
 	 * der Voraussetzung eintreten wuerde.
+	 * 
 	 * @param a vorletzt-gewaehlte Zelle.
 	 * @param b Letzt-gewaehlte Zelle.
 	 * @param c Zelle die aktuell geprueft wird.
@@ -431,11 +448,12 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Submethode zu der Methode putNumberColBlock.
-	 * Ordnet und sortiert die fuer die Number möglichen Zellen und die Zellen in denen Number schon drinnen steht,
+	 * Ordnet und sortiert die fuer die Number moeglichen Zellen und die Zellen in denen Number schon drinnen steht,
 	 * in einem LinkedList Array.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
-	 * @return Columns Ein LinkedList Array, auf dem die Zellen die fuer Number möglich sind, oder Number enthalten ist, gespeichert sind.
+	 * @return Columns Ein LinkedList Array, auf dem die Zellen die fuer Number moeglich sind, oder Number enthalten ist, gespeichert sind.
 	 * Hier steht der Index des Arrays fuer die jeweilige Column im Grid.
 	 */
 	public LinkedList[] sortFixedAndPossible(Grid grid, int number){
@@ -462,6 +480,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Submethode zu der Methode sortFixedAndPossible.
 	 * Ordnet und sortiert die Zellen in denen Number schon drinnen steht in einer LinkedList.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
 	 * @return fixedCells Eine LinkedList, auf dem die Zellen wo Number enthalten ist, gespeichert sind.
@@ -482,10 +501,11 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Submethode zu der Methode sortFixedAndPossible.
-	 * Ordnet und sortiert die Zellen in denen Number stehen könnte in einer LinkedList.
+	 * Ordnet und sortiert die Zellen in denen Number stehen koennte in einer LinkedList.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
-	 * @return possibleCells Eine LinkedList, auf dem die Zellen in denen Number stehen könnte, gespeichert sind.
+	 * @return possibleCells Eine LinkedList, auf dem die Zellen in denen Number stehen koennte, gespeichert sind.
 	 */
 	public LinkedList<Cell> getPossibleCells(Grid grid, int number){
 		LinkedList<Cell> possibleCells = new LinkedList<Cell>();
@@ -511,10 +531,11 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Submethode zu der Methode getPossibleCells.
-	 * Liefert die Ankerzellen der Blöcke zurueck, in denen number nicht enthalten ist.
+	 * Liefert die Ankerzellen der Bloecke zurueck, in denen number nicht enthalten ist.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
-	 * @return temp LinkedList der Blöcke in denen number nicht enthalten ist.
+	 * @return temp LinkedList der Bloecke in denen number nicht enthalten ist.
 	 */
 	public LinkedList<Cell> blocksWithoutNumber(Grid grid, int number){
 		LinkedList<Cell> allBlocks = new LinkedList<Cell>();
@@ -555,11 +576,12 @@ public class PuzzleRow implements RowSortable{
 
 	/**
 	 * Submethode zu der Methode getPossibleCells.
-	 * Entscheidet, ob die uebergebene Zelle eine mögliche fuer die Belegung mit number ist.
+	 * Entscheidet, ob die uebergebene Zelle eine moegliche fuer die Belegung mit number ist.
+	 * 
 	 * @param grid Das Sudoku auf dem die Zellen ermittelt werden
 	 * @param a Die Zelle die aktuell geprueft wird.
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
-	 * @return boolean true, falls es eine mögliche Zelle ist. False, falls nicht.
+	 * @return boolean true, falls es eine moegliche Zelle ist. False, falls nicht.
 	 */
 	public boolean possibleForNumber(Grid grid, Cell a, int number){
 		int nope = 0;
@@ -580,6 +602,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Submethode zu der Methode putNumberColBlock..
 	 * Ueberprueft, ob die Voraussetzungen der Methode auf dieses Grid zustimmen.
+	 * 
 	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @param number Die Zahl deren Erweiterungen ermittelt werden sollen.
 	 * @return boolean true falls die Voraussetzungen erfuellt sind. False, falls nicht.
@@ -635,6 +658,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Hilfsmethode zu hasRowConflictFree.
 	 * Ueberprueft auf dem grid, ob es nur aus Nullen besteht - also ein Nullergrid ist.
+	 * 
 	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
 	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurueckgegeben. Sonst false.
 	 */
@@ -660,6 +684,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Hilfsmethode zu putNumberColBlock.
 	 * Ueberprueft auf dem grid, ob es nur aus -1 besteht - also leer ist.
+	 * 
 	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
 	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurueckgegeben. Sonst false.
 	 */
@@ -687,6 +712,7 @@ public class PuzzleRow implements RowSortable{
 	 * Ueberprueft, bei call = 1, auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein v-konfliktfreies Sudoku entstehen kann.
 	 * Ueberprueft, bei call = 2, auf dem Sudoku, ob durch eine neue Anordnung der Zeilen, ein Sudoku entsteht bei dem in jeder Spalte, Block die Zahlen von 1-9 genau einmal vorkommen.
 	 * Ueberprueft, bei call = 3, auf dem Sudoku, ob durch eine neue Anordnung ein zulaessig gefuelltes Sudoku entstehen kann.
+	 * 
 	 * @param grid Sudoku, auf dem die Zeilen neu angeordnet werden, um eine moegliche v-konfliktfreie Anordnung zu finden.
 	 * @param call 1, falls von getRowConflictFree aufgerufen. 2, falls von getRowSortConflictFree aufgerufen. 3, falls von getRowSudoku aufgerufen.
 	 * @return grid Eine v-konfliktfreie Anordnung. Falls keine solche existiert, ein Nullergrid.
@@ -721,6 +747,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Hilfsmethode zu getRowConflictFree.
 	 * Ueberprueft, ob das gegebene Grid nicht schon v-konfliktfrei ist.
+	 * 
 	 * @param grid Das Grid, auf dem geprueft wird, ob es bereits v-konfliktfrei ist.
 	 * @return boolean true, falls v-konfliktfrei. false, falls nicht.
 	 */
@@ -738,6 +765,7 @@ public class PuzzleRow implements RowSortable{
 	
 	/**
 	 * Erzeugt ein Grid und fuellt es mit Nullen.
+	 * 
 	 * @return grid Das mit Nullen befuellte Sudoku bzw Grid
 	 */
 	public Grid returnNullGrid(){
@@ -753,6 +781,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Hilfsmethode zu der Methode getRowSortColBlock.
 	 * Ueberprueft alle Columns, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * 
 	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true, falls jede Zahl in jeder Col einmal vorkommt. false, falls nicht.
 	 */
@@ -782,6 +811,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Hilfsmethode zu der Methode getRowSudoku.
 	 * Ueberprueft alle Rows, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * 
 	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true, falls jede Zahl in jeder Row einmal vorkommt. false, falls nicht.
 	 */
@@ -811,6 +841,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Hilfsmethode zu der Methode getRowSortColBlock.
 	 * Ueberprueft alle Blocks, ob in ihnen jede Zahl jeweils einmal vorkommt.
+	 * 
 	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true, falls jede Zahl in jedem Block einmal vorkommt. false, falls nicht.
 	 */
@@ -833,6 +864,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Submethode zu der Methode blockValid.
 	 * Ueber die Ankerzelle, die uebergeben wird, wird der gesamte Block ermittelt und durchlaufen
+	 * 
 	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @param a Ankerzelle eines Blocks
 	 * @return int 1 falls eine Zahl mehr als einmal pro BLock vorkommt. 0 falls nicht.
@@ -866,6 +898,7 @@ public class PuzzleRow implements RowSortable{
 	/**
 	 * Submethode zu der Methode putNumberColBlock..
 	 * Ueberprueft, ob das uebergebene Grid teilbefuellt ist, oder nicht.
+	 * 
 	 * @param grid Das Sudoku auf dem geprueft wird
 	 * @return boolean true falls teilbefuellt. False, falls nicht.
 	 */
