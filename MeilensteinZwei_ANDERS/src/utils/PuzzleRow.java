@@ -659,7 +659,7 @@ public class PuzzleRow implements RowSortable{
 	 * Hilfsmethode zu hasRowConflictFree.
 	 * Ueberprueft auf dem grid, ob es nur aus Nullen besteht - also ein Nullergrid ist.
 	 * 
-	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
+	 * @param temp Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
 	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurueckgegeben. Sonst false.
 	 */
 	public boolean isNullGrid(Grid temp) {
@@ -685,7 +685,7 @@ public class PuzzleRow implements RowSortable{
 	 * Hilfsmethode zu putNumberColBlock.
 	 * Ueberprueft auf dem grid, ob es nur aus -1 besteht - also leer ist.
 	 * 
-	 * @param grid Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
+	 * @param temp Sudoku, auf dem die Anzahl der Nullen ermittelt wird.
 	 * @return boolean Besteht das Sudoku nur aus Nullen, so wird true zurueckgegeben. Sonst false.
 	 */
 	public boolean isEmptyGrid(Grid temp) {
