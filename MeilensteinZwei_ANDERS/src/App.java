@@ -66,20 +66,20 @@ public class App {
 	}
 	
 	public static void callPuzzleRow(Grid a, PuzzleRow cab){
-//		System.out.println("GetRowConflictFree:");
-//		(cab.getRowConflictFree(a)).print();
-//		
-//		System.out.println("\nHasRowConflictFree: " + cab.hasRowConflictFree(a));
-//		
-//		System.out.println("\ngetRowSortColBlock: ");
-//		(cab.getRowSortColBlock(a)).print();
-//		
-//		System.out.println("\nHasRowSortColBlock: " + cab.hasRowSortColBlock(a));
-//		
-//		System.out.println("\ngetRowSudoku: ");
-//		(cab.getRowSudoku(a)).print();
-//		
-//		System.out.println("\nHasRowSudoku: " + cab.hasRowSudoku(a));
+		System.out.println("GetRowConflictFree:");
+		(cab.getRowConflictFree(a)).print();
+		
+		System.out.println("\nHasRowConflictFree: " + cab.hasRowConflictFree(a));
+		
+		System.out.println("\ngetRowSortColBlock: ");
+		(cab.getRowSortColBlock(a)).print();
+		
+		System.out.println("\nHasRowSortColBlock: " + cab.hasRowSortColBlock(a));
+		
+		System.out.println("\ngetRowSudoku: ");
+		(cab.getRowSudoku(a)).print();
+		
+		System.out.println("\nHasRowSudoku: " + cab.hasRowSudoku(a));
 		
 		System.out.println("\nputNumberColBlock: " + cab.putNumberColBlock(a, 2));
 	}
